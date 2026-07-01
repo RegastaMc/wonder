@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Product } from '../../../../../../prisma/src/lib/prisma/client'
 
-export default function page() {
+export default function Page() {
   const [products, setProducts] = useState<Product[]>([])
 
   useEffect(() => {

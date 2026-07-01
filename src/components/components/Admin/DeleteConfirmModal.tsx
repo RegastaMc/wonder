@@ -143,7 +143,7 @@ const DeleteConfirmModal = ({
 
           {productName && (
             <p className='text-sm font-medium text-red-600 bg-red-50 rounded-lg p-2 mb-4 break-words'>
-              "{productName}"
+              {productName}
             </p>
           )}
 

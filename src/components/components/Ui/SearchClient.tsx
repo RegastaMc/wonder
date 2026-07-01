@@ -115,7 +115,12 @@ const SearchClient = ({
 
     if (value.length >= 2 || value.length === 0) {
       fetchSuggestions(value)
-      debouncedSearch(value, selectedCategory, priceRange.min, priceRange.max)
+      debouncedSearch(
+        value,
+        selectedCategory,
+        priceRange.min ? Number(priceRange.min) : '',
+        priceRange.max ? Number(priceRange.max) : '',
+      )
     } else {
       setSuggestions([])
       setProducts([])
@@ -128,25 +133,25 @@ const SearchClient = ({
     debouncedSearch(
       suggestion,
       selectedCategory,
-      priceRange.min,
-      priceRange.max,
+      priceRange.min ? Number(priceRange.min) : '',
+      priceRange.max ? Number(priceRange.max) : '',
     )
   }
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category)
-    debouncedSearch(searchQuery, category, priceRange.min, priceRange.max)
+    debouncedSearch(searchQuery, category, priceRange.min ? Number(priceRange.min) : '', priceRange.max ? Number(priceRange.max) : '')
   }
 
   const handlePriceChange = (type: 'min' | 'max', value: string) => {
     const newRange = { ...priceRange, [type]: value }
     setPriceRange(newRange)
-    debouncedSearch(searchQuery, selectedCategory, newRange.min, newRange.max)
+    debouncedSearch(searchQuery, selectedCategory, newRange.min ? Number(newRange.min) : '', newRange.max ? Number(newRange.max) : '')
   }
 
   const handleSort = (sort: string) => {
     setSortBy(sort)
-    let sortedProducts = [...products]
+    const sortedProducts = [...products]
 
     switch (sort) {
       case 'price_asc':
