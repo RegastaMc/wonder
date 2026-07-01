@@ -29,6 +29,9 @@ const ProductList = ({ initialCategory = null, params }: ProductListProps) => {
     initialCategory || urlCategory || null,
   )
 
+  // Workaround for missing/unknown Categories prop types
+  const CategoriesComp = Categories as any
+
   // Fetch all products on mount
   useEffect(() => {
     fetchProducts()
@@ -115,7 +118,7 @@ const ProductList = ({ initialCategory = null, params }: ProductListProps) => {
   return (
     <div className='w-full'>
       {/* Categories Section */}
-      <Categories
+      <CategoriesComp
         onCategoryChange={handleCategoryChange}
         initialCategory={selectedCategory}
       />
