@@ -18,6 +18,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+   experimental: {
+    outputFileTracingIgnores: [
+      "./src/lib/prisma/client", // If you have a custom Prisma output
+      "**/Application Data/**",   // General ignore for the problematic path
+    ],
+  } as any,
 }
 
 export default nextConfig

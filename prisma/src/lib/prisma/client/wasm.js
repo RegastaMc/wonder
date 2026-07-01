@@ -253,7 +253,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\Web Projects\\e-commerce-ui\\client\\prisma\\src\\lib\\prisma\\client",
+      "value": "D:\\Premium Projects\\wink_and_wonder_main\\prisma\\src\\lib\\prisma\\client",
       "fromEnvVar": null
     },
     "config": {
@@ -267,7 +267,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\Web Projects\\e-commerce-ui\\client\\prisma\\schema.prisma",
+    "sourceFilePath": "D:\\Premium Projects\\wink_and_wonder_main\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -281,6 +281,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
