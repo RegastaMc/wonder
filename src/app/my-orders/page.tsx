@@ -12,11 +12,14 @@ export default async function OrdersPage() {
 
   const { orders, success, error } = await getUserOrders(session.user.id)
 
+  // Normalize dates to strings so the client component's Order types match (createdAt/updatedAt as string)
+  const normalizedOrders = orders ? JSON.parse(JSON.stringify(orders)) : []
+
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='max-w-6xl mx-auto'>
         <h1 className='text-2xl font-bold mb-6'>My Orders</h1>
-        <OrdersClient orders={orders} success={success} error={error} />
+        <OrdersClient orders={normalizedOrders} success={success} error={error} />
       </div>
     </div>
   )
