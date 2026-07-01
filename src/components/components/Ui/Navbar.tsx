@@ -1,7 +1,8 @@
 "use client"
+import AccountDropdown from '@/components/AccountDropdown';
+import CartSlide from '@/components/CartSlide';
 import React, { useState, useRef, useEffect } from 'react';
-import AccountDropdown from './AccountDropdown';
-import CartSlide from './CartSlide';
+
 
 interface NavItem {
   label: string;
