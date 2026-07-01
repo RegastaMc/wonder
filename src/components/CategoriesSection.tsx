@@ -18,7 +18,7 @@ interface Category {
   id: string;
   name: string;
   slug: string;
-  image: string;
+  image?: string;
   description?: string;
   subCategories?: SubCategory[];
   productCount?: number;
@@ -364,7 +364,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
       >
         <div className="w-full h-full rounded-full overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300 border-4 border-white">
           <Image
-            src={category.image}
+            src={category.image || ''}
             alt={category.name}
             className="w-full h-full cursor-pointer object-cover group-hover:scale-110 transition-transform duration-500"
             onError={(e) => {
@@ -564,9 +564,7 @@ const mockCategories: Category[] = [
   },
 ];
 
-// ============================================================
-// USAGE EXAMPLE
-// ============================================================
+
 const CategoriesSection: React.FC = () => {
   const handleCategoryClick = (category: Category) => {
     console.log('Category clicked:', category.name);

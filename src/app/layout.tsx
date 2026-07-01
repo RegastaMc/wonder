@@ -36,7 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider>
-          <div className='mx-auto p-4 sm:px-0 '>
+          <div className='mx-auto sm:px-0 '>
             <Navbar />
             {children}
             {/* <Footer />/ */}
