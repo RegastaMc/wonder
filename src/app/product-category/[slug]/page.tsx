@@ -3,7 +3,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CategoryPageClient } from '@/components/CategoryPageClient';
 
-
+// ============================================================
+// TYPES
+// ============================================================
 interface SubCategory {
   id: string;
   name: string;
@@ -34,18 +36,9 @@ interface Product {
   updatedAt: Date;
 }
 
-interface CategoryPageProps {
-  params: {
-    slug: string;
-  };
-  searchParams?: {
-    sort?: string;
-    page?: string;
-    view?: 'grid' | 'list';
-  };
-}
-
-
+// ============================================================
+// SAMPLE CATEGORIES DATA
+// ============================================================
 const sampleCategories: Category[] = [
   {
     id: '1',
@@ -274,8 +267,6 @@ const sampleProducts: Product[] = [
 // DATA FETCHING FUNCTIONS
 // ============================================================
 async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  // In a real app, this would fetch from your database
-  // For now, we'll use the sample data
   const category = sampleCategories.find(c => c.slug === slug);
   return category || null;
 }
@@ -292,10 +283,8 @@ async function getProductsByCategory(
   const limit = options?.limit || 20;
   const skip = (page - 1) * limit;
 
-  // Filter products by category
   const filtered = sampleProducts.filter(p => p.category === categoryName);
 
-  // Sort products
   switch (options?.sort) {
     case 'price-asc':
       filtered.sort((a, b) => a.price - b.price);
@@ -304,7 +293,6 @@ async function getProductsByCategory(
       filtered.sort((a, b) => b.price - a.price);
       break;
     default:
-      // Default sort by newest
       filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       break;
   }
@@ -325,8 +313,13 @@ async function getProductsByCategory(
 // ============================================================
 // METADATA GENERATION
 // ============================================================
-export async function generateMetadata({ params }: CategoryPageProps) {
-  const category = await getCategoryBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
   
   if (!category) {
     return {
@@ -348,18 +341,32 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 // ============================================================
 // MAIN PAGE COMPONENT
 // ============================================================
-export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams?: Promise<{
+    sort?: string;
+    page?: string;
+    view?: 'grid' | 'list';
+  }>;
+}) {
+  // Await params and searchParams
+  const { slug } = await params;
+  const search = await searchParams;
+
   // Fetch category data
-  const category = await getCategoryBySlug(params.slug);
+  const category = await getCategoryBySlug(slug);
   
   if (!category) {
     notFound();
   }
 
   // Get sort and pagination params
-  const sort = searchParams?.sort || 'relevance';
-  const page = parseInt(searchParams?.page || '1');
-  const view = searchParams?.view || 'grid';
+  const sort = search?.sort || 'relevance';
+  const page = parseInt(search?.page || '1');
+  const view = search?.view || 'grid';
 
   // Fetch products for this category
   const productsData = await getProductsByCategory(category.name, {
