@@ -1,7 +1,6 @@
 import BannerSection from '@/components/BannerSection'
 import CategoriesSection from '@/components/CategoriesSection'
 import Testimonials from '@/components/components/Ui/Testimonials'
-import ContactForm from '@/components/forms/ContactsForm'
 import ProductList from '@/components/ProductList'
 import Image from 'next/image'
 import { Suspense } from 'react'
