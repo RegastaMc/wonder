@@ -9,6 +9,7 @@ import SearchBar from './components/Ui/SearchBar'
 import AccountDropdown from './AccountDropdown'
 import CartSlide from './CartSlide'
 import { useRouter } from 'next/navigation'
+import { mockCategories } from './CategoriesSection'
 
 interface NavItem {
   label: string;
@@ -16,13 +17,7 @@ interface NavItem {
 }
 
 // --- Data ---
-const categories: NavItem[] = [
-  { label: 'Women', href: '#' },
-  { label: 'Men', href: '#' },
-  { label: 'Couples', href: '#' },
-  { label: 'Combos', href: '#' },
-  { label: 'BDSM', href: '#' },
-];
+const categories = mockCategories
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -75,11 +70,11 @@ export default function Navbar() {
   const closeMenu = (): void => setIsMenuOpen(false);
 
   const Register=() => { 
-    router.push('/signup')
+   () => router.push('/signup')
   }
 
   const Login=() => { 
-    router.push('/signin')
+   () => router.push('/signin')
   }
 
   return (
@@ -113,7 +108,7 @@ export default function Navbar() {
             </button>
 
             {/* Logo */}
-             <div className="logo-font text-2xl md:text-3xl tracking-tight text-[#DBA39A]">
+             <div className="logo-font text-2xl md:text-3xl cursor-pointer tracking-tight text-[#DBA39A]" onClick={()=>router.push('/')}>
               <span className="font-serif-italic font-light text-[#b28b7a]">✧</span>
               <span className="font-bold">Wink&</span>
               <span className="font-serif-italic">Wonder</span>
@@ -121,14 +116,14 @@ export default function Navbar() {
 
             {/* Desktop Categories */}
             <div className="hidden md:flex items-center space-x-1 ml-6 text-sm font-medium">
-              {categories.map((category) => (
-                <a
-                  key={category.label}
-                  href={category.href}
+              {categories.map((category,index) => (
+                <Link
+                  key={`${category.slug}-${index}`}
+                  href={`/product-category/${category.slug}`}
                   className="category-link px-3 py-2 rounded-full transition-colors hover:text-[#DBA39A] hover:bg-[#F0DBDB]/20 text-[#3d2c28]"
                 >
-                  {category.label.toUpperCase()}
-                </a>
+                  {category.name.toUpperCase()}
+                </Link>
               ))}
             </div>
           </div>
@@ -162,18 +157,18 @@ export default function Navbar() {
         <div className="px-4 py-4 space-y-2 text-sm font-medium">
           {categories.map((category) => (
             <a
-              key={category.label}
-              href={category.href}
+              key={category.name}
+              href={`/product-category/${category.slug}`}
               className="block px-3 py-2 rounded-lg hover:bg-[#F0DBDB] transition text-[#3d2c28]"
               onClick={closeMenu}
             >
-              {category.label}
+              {category.name}
             </a>
           ))}
           <div className="border-t border-[#F0DBDB]/50 my-2"></div>
           <a
             href="#"
-            className="block px-3 py-2 rounded-lg hover:bg-[#F0DBDB] transition flex items-center gap-2 text-[#3d2c28]"
+            className=" px-3 py-2 rounded-lg hover:bg-[#F0DBDB] transition flex items-center gap-2 text-[#3d2c28]"
             onClick={closeMenu}
           >
             <svg

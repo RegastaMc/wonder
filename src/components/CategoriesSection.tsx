@@ -279,7 +279,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
           {infiniteCategories.map((category, index) => (
             <div
               key={`${category.id}-${index}`}
-              className="flex-shrink-0 px-1"
+              className="shrink-0 px-1"
               style={{ width: `${100 / 8}%` }}
             >
               <CategoryCard
@@ -447,14 +447,17 @@ const mockCategories: Category[] = [
     id: '1',
     name: 'Women',
     slug: 'women',
-    image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=400&fit=crop',
-    description: 'Elegant & stylish',
-    productCount: 156,
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782932804/women_tqw9yy.webp',
+    description: 'Women toys and accessories',
+    productCount: 10,
     subCategories: [
-      { id: '1a', name: 'Dresses', slug: 'dresses' },
-      { id: '1b', name: 'Tops', slug: 'tops' },
-      { id: '1c', name: 'Pants', slug: 'pants' },
-      { id: '1d', name: 'Accessories', slug: 'accessories' },
+      { id: '1a', name: 'Kegel Balls', slug: 'kegel-balls' },
+      { id: '1b', name: 'Sexy Underwear & Lingerie', slug: 'sexy-underwear-and-lingerie' },
+      { id: '1c', name: 'Vibrators', slug: 'vibrators' },
+      { id: '1d', name: 'Women Accessories', slug: 'women-accessories' },
+      { id: '1e', name: 'Anal Toys For Women', slug: 'anal-toys-for-women' },
+      { id: '1f', name: 'Dildos', slug: 'dildos' },
+      { id: '1g', name: 'Intimate Care', slug: 'intimate-care' },
     ],
   },
   {
@@ -465,103 +468,96 @@ const mockCategories: Category[] = [
     description: 'Modern & classic',
     productCount: 98,
     subCategories: [
-      { id: '2a', name: 'Shirts', slug: 'shirts' },
-      { id: '2b', name: 'Pants', slug: 'pants' },
-      { id: '2c', name: 'Blazers', slug: 'blazers' },
+      { id: '2a', name: 'Male Condoms', slug: 'male-condoms' },
+      { id: '2b', name: 'Male Masturbators', slug: 'male-masturbators' },
+      { id: '2c', name: 'Men Accessories', slug: 'men-accessories' },
+      { id: '2d', name: 'Sexy Underwear For Men', slug: 'sexy-underwear-for-men' },
+      { id: '2e', name: 'Anal Toys For Men', slug: 'anal-toys-for-men' },
+      { id: '2f', name: 'Cock Rings', slug: 'cock-rings' },
+      { id: '2g', name: 'Larger Penis', slug: 'larger-penis' },
+
+
+
     ],
   },
   {
     id: '3',
-    name: 'Kids',
-    slug: 'kids',
+    name: 'Combos',
+    slug: 'combos',
     image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=400&h=400&fit=crop',
     description: 'Fun & colorful',
-    productCount: 67,
+    productCount: 5,
     subCategories: [
-      { id: '3a', name: 'Girls', slug: 'girls' },
-      { id: '3b', name: 'Boys', slug: 'boys' },
-      { id: '3c', name: 'Babies', slug: 'babies' },
+     
     ],
   },
   {
     id: '4',
-    name: 'Accessories',
-    slug: 'accessories',
+    name: 'Couples',
+    slug: 'couples',
     image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
     description: 'Complete your look',
     productCount: 134,
     subCategories: [
-      { id: '4a', name: 'Bags', slug: 'bags' },
-      { id: '4b', name: 'Watches', slug: 'watches' },
-      { id: '4c', name: 'Jewelry', slug: 'jewelry' },
-      { id: '4d', name: 'Belts', slug: 'belts' },
+      { id: '4a', name: 'Couples Sex Toys', slug: 'couples-sex-toys' },
+      { id: '4b', name: 'Foreplay', slug: 'foreplay' },
+      { id: '4c', name: 'Light Bondage', slug: 'light-bondage' },
+      { id: '4d', name: 'Strap Ons', slug: 'strap-ons' },
+      { id: '4e', name: 'Accessories And Games', slug: 'accessories-and-games' },
+      { id: '4f', name: 'Strap Ons', slug: 'strap-ons' },
+
     ],
   },
   {
     id: '5',
-    name: 'Shoes',
-    slug: 'shoes',
+    name: 'BDSM',
+    slug: 'bdsm',
     image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop',
     description: 'Step in style',
     productCount: 89,
     subCategories: [
-      { id: '5a', name: 'Sneakers', slug: 'sneakers' },
-      { id: '5b', name: 'Boots', slug: 'boots' },
-      { id: '5c', name: 'Sandals', slug: 'sandals' },
+      { id: '5a', name: 'Fetish Wear', slug: 'fetish-wear' },
+      { id: '5b', name: 'Kinky Sex Toys', slug: 'kinky-sex-toys' },
+      { id: '5c', name: 'Sex Machines', slug: 'sex-machines' },
+      { id: '5d', name: 'Sex Whips And Paddles', slug: 'sex-whips-and-paddles' },
+      { id: '5e', name: 'BDSM Accessories', slug: 'bdsm-accessories' },
+      { id: '5f', name: 'Bondage Restraints', slug: 'bondage-restraints' },
+      { id: '5g', name: 'Chastity Devices And Cages', slug: 'chastity-devices-and-cages' },
+      { id: '5h', name: 'Clamps,Pumps And Suction Cups', slug: 'clamps-pumps-and-suction-cups' },
+      { id: '5i', name: 'Electro And Medical Toys', slug: 'electro-and-medical-toys' }
     ],
   },
   {
     id: '6',
-    name: 'Beauty',
-    slug: 'beauty',
+    name: 'Sexy Underwear & Lingerie',
+    slug: 'sexy-underwear-and-lingerie',
     image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop',
     description: 'Glow & shine',
     productCount: 112,
     subCategories: [
-      { id: '6a', name: 'Skincare', slug: 'skincare' },
-      { id: '6b', name: 'Makeup', slug: 'makeup' },
-      { id: '6c', name: 'Fragrance', slug: 'fragrance' },
+      { id: '6a', name: 'Sexy Costumes', slug: 'sexy-costumes' },
+      { id: '6b', name: 'Stockings And Hosiery', slug: 'stockings-and-hosiery' },
+      { id: '6c', name: 'Suspender Belts', slug: 'suspender-belts' },
+      { id: '6d', name: 'Thongs,Strings and Knickers', slug: 'thongs-strings-and-knickers' },
+      { id: '6e', name: 'Basques And Corsets', slug: 'basques-and-corsets' },
+      { id: '6f', name: 'Body Stockings', slug: 'body-stockings' },
+      { id: '6g', name: 'Christmas Lingerie', slug: 'christmas-lingerie' },
+      { id: '6h', name: 'Chrotchless Lingerie', slug: 'chrotchless-lingerie' },
+      { id: '6i', name: 'Nightdresses', slug: 'nightdresses' },
     ],
   },
   {
     id: '7',
-    name: 'Home & Living',
-    slug: 'home-living',
+    name: 'Flowers',
+    slug: 'flowers',
     image: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=400&h=400&fit=crop',
     description: 'Cozy & modern',
     productCount: 78,
     subCategories: [
-      { id: '7a', name: 'Decor', slug: 'decor' },
-      { id: '7b', name: 'Furniture', slug: 'furniture' },
-      { id: '7c', name: 'Kitchen', slug: 'kitchen' },
+      
     ],
   },
-  {
-    id: '8',
-    name: 'Sports',
-    slug: 'sports',
-    image: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=400&h=400&fit=crop',
-    description: 'Active lifestyle',
-    productCount: 94,
-    subCategories: [
-      { id: '8a', name: 'Fitness', slug: 'fitness' },
-      { id: '8b', name: 'Outdoor', slug: 'outdoor' },
-      { id: '8c', name: 'Yoga', slug: 'yoga' },
-    ],
-  },
-  {
-    id: '9',
-    name: 'Electronics',
-    slug: 'electronics',
-    image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=400&fit=crop',
-    description: 'Tech & gadgets',
-    productCount: 56,
-    subCategories: [
-      { id: '9a', name: 'Phones', slug: 'phones' },
-      { id: '9b', name: 'Laptops', slug: 'laptops' },
-      { id: '9c', name: 'Audio', slug: 'audio' },
-    ],
-  },
+ 
 ];
 
 
