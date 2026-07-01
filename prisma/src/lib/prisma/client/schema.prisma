@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./src/lib/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum userRole {
+  SUPER
+  ADMIN
+  USER
+}
+
+enum userStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  username      String?   @unique
+  passwordhash  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  emailVerified DateTime?
+  image         Json?
+  name          String?
+  phone         String?   @unique
+
+  status userStatus @default(ACTIVE)
+  role   userRole   @default(USER)
+  orders Order[]
+}
+
+model Order {
+  id          String @id @default(cuid())
+  orderNumber String @unique
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items OrderItem[]
+
+  status        OrderStatus   @default(PENDING)
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentMethod String
+
+  subtotal    Float
+  tax         Float
+  shippingFee Float
+  total       Float
+
+  mpesaReceiptNumber String?
+  mpesaTransactionId String?
+  mpesaResultCode    String?
+
+  phone String
+  email String
+
+  shippingAddress Json
+
+  paidAt      DateTime?
+  deliveredAt DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  name      String
+  price     Float
+  quantity  Int
+  image     Json?
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model Product {
+  id String @id @default(cuid()) @map("_id")
+
+  name        String
+  isAvailable Boolean @default(true)
+  desc        String?
+  images      Json
+  category    String
+  price       Float
+  offerPrice  Float?
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Contact {
+  id        String        @id @default(cuid())
+  contactId String        @unique
+  name      String
+  email     String
+  phone     String
+  subject   String
+  message   String        @db.Text
+  status    ContactStatus @default(UNREAD)
+  reply     String?       @db.Text
+  repliedAt DateTime?
+  repliedBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ContactStatus {
+  UNREAD
+  READ
+  IN_PROGRESS
+  RESOLVED
+  ARCHIVED
+}
