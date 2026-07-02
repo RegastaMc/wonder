@@ -70,11 +70,11 @@ export default function Navbar() {
   const closeMenu = (): void => setIsMenuOpen(false);
 
   const Register=() => { 
-   () => router.push('/signup')
+   router.push('/signup')
   }
 
   const Login=() => { 
-   () => router.push('/signin')
+   router.push('/signin')
   }
 
   return (
