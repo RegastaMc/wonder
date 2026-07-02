@@ -236,7 +236,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-[#3d2c28]">Popular Categories</h2>
+          <h2 className="text-2xl  font-bold text-[#3d2c28]">Popular Categories</h2>
           {/* <p className="text-sm text-[#3d2c28]/60 mt-1">Explore our curated collections</p> */}
         </div>
         {showNavigation && (
@@ -379,7 +379,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
         <div className="absolute inset-0 rounded-full border-4 border-transparent group-hover:border-[#DBA39A]/30 transition-all duration-300 pointer-events-none" />
         
         {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        <div className="absolute inset-0 rounded-full bg-linear-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
         {/* Product count badge
         {category.productCount !== undefined && category.productCount > 0 && (
@@ -464,7 +464,7 @@ const mockCategories: Category[] = [
     id: '2',
     name: 'Men',
     slug: 'men',
-    image: 'https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&h=400&fit=crop',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782955950/dildos_eezbvp.webp',
     description: 'Modern & classic',
     productCount: 98,
     subCategories: [
@@ -484,7 +484,7 @@ const mockCategories: Category[] = [
     id: '3',
     name: 'Combos',
     slug: 'combos',
-    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=400&h=400&fit=crop',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782956562/combos1_sz0ems.webp',
     description: 'Fun & colorful',
     productCount: 5,
     subCategories: [
@@ -495,7 +495,7 @@ const mockCategories: Category[] = [
     id: '4',
     name: 'Couples',
     slug: 'couples',
-    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782955950/couples_wxc9jx.webp',
     description: 'Complete your look',
     productCount: 134,
     subCategories: [
@@ -512,7 +512,7 @@ const mockCategories: Category[] = [
     id: '5',
     name: 'BDSM',
     slug: 'bdsm',
-    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782955950/BDSM_tipb4p.webp',
     description: 'Step in style',
     productCount: 89,
     subCategories: [
@@ -531,7 +531,7 @@ const mockCategories: Category[] = [
     id: '6',
     name: 'Sexy Underwear & Lingerie',
     slug: 'sexy-underwear-and-lingerie',
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782955951/Sexy-Underwear_hu5loc.webp',
     description: 'Glow & shine',
     productCount: 112,
     subCategories: [
@@ -550,7 +550,7 @@ const mockCategories: Category[] = [
     id: '7',
     name: 'Flowers',
     slug: 'flowers',
-    image: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=400&h=400&fit=crop',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782956466/flowers_klqrqu.webp',
     description: 'Cozy & modern',
     productCount: 78,
     subCategories: [
@@ -564,12 +564,10 @@ const mockCategories: Category[] = [
 const CategoriesSection: React.FC = () => {
   const handleCategoryClick = (category: Category) => {
     console.log('Category clicked:', category.name);
-    // Navigate to category page: /category/[slug]
   };
 
   const handleSubCategoryClick = (category: Category, subCategory: SubCategory) => {
     console.log('Subcategory clicked:', subCategory.name, 'in', category.name);
-    // Navigate to subcategory page: /category/[slug]/[subSlug]
   };
 
   return (

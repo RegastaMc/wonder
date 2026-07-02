@@ -36,9 +36,7 @@ const Icons = {
   ),
 };
 
-// ============================================================
-// MAIN CART SLIDE COMPONENT
-// ============================================================
+
 const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
@@ -168,7 +166,7 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
       {isAnimating && (
         <div
           ref={cartRef}
-          className={`fixed top-0 right-0 h-full w-full sm:w-[420px] md:w-[480px] bg-white shadow-2xl z-50 transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 h-full w-full sm:w-105 md:w-120 bg-white shadow-2xl z-50 transition-transform duration-300 ease-in-out ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           role="dialog"
@@ -201,11 +199,11 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
                 <Icons.Shopping />
                 <p className="text-lg font-semibold text-[#3d2c28] mt-4">Your cart is empty</p>
                 <p className="text-sm text-[#3d2c28]/60 mt-2 max-w-xs">
-                  Discover our latest collections and find your perfect pieces
+                  Go Back and continue Shopping...
                 </p>
                 <button
                   onClick={closeCart}
-                  className="mt-6 px-6 py-3 bg-[#DBA39A] hover:bg-[#c49087] text-white font-medium rounded-xl transition-colors shadow-md hover:shadow-lg"
+                  className="mt-6 px-6 py-2 bg-[#DBA39A] cursor-pointer hover:bg-[#c49087] text-white font-medium rounded-xl transition-colors shadow-md hover:shadow-lg"
                 >
                   Continue Shopping
                 </button>

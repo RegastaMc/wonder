@@ -3,9 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { CategoryPageClient } from '@/components/CategoryPageClient';
 
-// ============================================================
-// TYPES
-// ============================================================
+
 interface SubCategory {
   id: string;
   name: string;
@@ -36,9 +34,128 @@ interface Product {
   updatedAt: Date;
 }
 
-// ============================================================
-// SAMPLE CATEGORIES DATA
-// ============================================================
+const mockCategories: Category[] = [
+  {
+    id: '1',
+    name: 'Women',
+    slug: 'women',
+    image: 'https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782932804/women_tqw9yy.webp',
+    description: 'Women toys and accessories',
+    productCount: 10,
+    subCategories: [
+      { id: '1a', name: 'Kegel Balls', slug: 'kegel-balls' },
+      { id: '1b', name: 'Sexy Underwear & Lingerie', slug: 'sexy-underwear-and-lingerie' },
+      { id: '1c', name: 'Vibrators', slug: 'vibrators' },
+      { id: '1d', name: 'Women Accessories', slug: 'women-accessories' },
+      { id: '1e', name: 'Anal Toys For Women', slug: 'anal-toys-for-women' },
+      { id: '1f', name: 'Dildos', slug: 'dildos' },
+      { id: '1g', name: 'Intimate Care', slug: 'intimate-care' },
+    ],
+  },
+  {
+    id: '2',
+    name: 'Men',
+    slug: 'men',
+    image: 'https://images.unsplash.com/photo-1617137968427-85924c800a22?w=400&h=400&fit=crop',
+    description: 'Modern & classic',
+    productCount: 98,
+    subCategories: [
+      { id: '2a', name: 'Male Condoms', slug: 'male-condoms' },
+      { id: '2b', name: 'Male Masturbators', slug: 'male-masturbators' },
+      { id: '2c', name: 'Men Accessories', slug: 'men-accessories' },
+      { id: '2d', name: 'Sexy Underwear For Men', slug: 'sexy-underwear-for-men' },
+      { id: '2e', name: 'Anal Toys For Men', slug: 'anal-toys-for-men' },
+      { id: '2f', name: 'Cock Rings', slug: 'cock-rings' },
+      { id: '2g', name: 'Larger Penis', slug: 'larger-penis' },
+
+
+
+    ],
+  },
+  {
+    id: '3',
+    name: 'Combos',
+    slug: 'combos',
+    image: 'https://images.unsplash.com/photo-1622290291468-a28f7a7dc6a8?w=400&h=400&fit=crop',
+    description: 'Fun & colorful',
+    productCount: 5,
+    subCategories: [
+     
+    ],
+  },
+  {
+    id: '4',
+    name: 'Couples',
+    slug: 'couples',
+    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop',
+    description: 'Complete your look',
+    productCount: 134,
+    subCategories: [
+      { id: '4a', name: 'Couples Sex Toys', slug: 'couples-sex-toys' },
+      { id: '4b', name: 'Foreplay', slug: 'foreplay' },
+      { id: '4c', name: 'Light Bondage', slug: 'light-bondage' },
+      { id: '4d', name: 'Strap Ons', slug: 'strap-ons' },
+      { id: '4e', name: 'Accessories And Games', slug: 'accessories-and-games' },
+      { id: '4f', name: 'Strap Ons', slug: 'strap-ons' },
+
+    ],
+  },
+  {
+    id: '5',
+    name: 'BDSM',
+    slug: 'bdsm',
+    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop',
+    description: 'Step in style',
+    productCount: 89,
+    subCategories: [
+      { id: '5a', name: 'Fetish Wear', slug: 'fetish-wear' },
+      { id: '5b', name: 'Kinky Sex Toys', slug: 'kinky-sex-toys' },
+      { id: '5c', name: 'Sex Machines', slug: 'sex-machines' },
+      { id: '5d', name: 'Sex Whips And Paddles', slug: 'sex-whips-and-paddles' },
+      { id: '5e', name: 'BDSM Accessories', slug: 'bdsm-accessories' },
+      { id: '5f', name: 'Bondage Restraints', slug: 'bondage-restraints' },
+      { id: '5g', name: 'Chastity Devices And Cages', slug: 'chastity-devices-and-cages' },
+      { id: '5h', name: 'Clamps,Pumps And Suction Cups', slug: 'clamps-pumps-and-suction-cups' },
+      { id: '5i', name: 'Electro And Medical Toys', slug: 'electro-and-medical-toys' }
+    ],
+  },
+  {
+    id: '6',
+    name: 'Sexy Underwear & Lingerie',
+    slug: 'sexy-underwear-and-lingerie',
+    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=400&fit=crop',
+    description: 'Glow & shine',
+    productCount: 112,
+    subCategories: [
+      { id: '6a', name: 'Sexy Costumes', slug: 'sexy-costumes' },
+      { id: '6b', name: 'Stockings And Hosiery', slug: 'stockings-and-hosiery' },
+      { id: '6c', name: 'Suspender Belts', slug: 'suspender-belts' },
+      { id: '6d', name: 'Thongs,Strings and Knickers', slug: 'thongs-strings-and-knickers' },
+      { id: '6e', name: 'Basques And Corsets', slug: 'basques-and-corsets' },
+      { id: '6f', name: 'Body Stockings', slug: 'body-stockings' },
+      { id: '6g', name: 'Christmas Lingerie', slug: 'christmas-lingerie' },
+      { id: '6h', name: 'Chrotchless Lingerie', slug: 'chrotchless-lingerie' },
+      { id: '6i', name: 'Nightdresses', slug: 'nightdresses' },
+    ],
+  },
+  {
+    id: '7',
+    name: 'Flowers',
+    slug: 'flowers',
+    image: 'https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=400&h=400&fit=crop',
+    description: 'Cozy & modern',
+    productCount: 78,
+    subCategories: [
+      
+    ],
+  },
+ 
+];
+
+const categories: any[] = mockCategories
+
+
+
 const sampleCategories: Category[] = [
   {
     id: '1',
@@ -263,12 +380,14 @@ const sampleProducts: Product[] = [
   },
 ];
 
-// ============================================================
-// DATA FETCHING FUNCTIONS
-// ============================================================
+
 async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const category = sampleCategories.find(c => c.slug === slug);
-  return category || null;
+  const category = categories.find(c => c.slug === slug);
+  if (!category) return null;
+  return {
+    ...category,
+    image: category.image ?? '',
+  } as Category;
 }
 
 async function getProductsByCategory(
@@ -310,9 +429,7 @@ async function getProductsByCategory(
   };
 }
 
-// ============================================================
-// METADATA GENERATION
-// ============================================================
+
 export async function generateMetadata({
   params,
 }: {
@@ -328,19 +445,17 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${category.name} | Your Store`,
+    title: `${category.name} | Wink & Wonder`,
     description: category.description || `Browse our ${category.name} collection`,
     openGraph: {
-      title: `${category.name} | Your Store`,
+      title: `${category.name} | Wink & Wonder`,
       description: category.description || `Browse our ${category.name} collection`,
       images: category.image ? [{ url: category.image }] : [],
     },
   };
 }
 
-// ============================================================
-// MAIN PAGE COMPONENT
-// ============================================================
+
 export default async function CategoryPage({
   params,
   searchParams,
@@ -377,7 +492,7 @@ export default async function CategoryPage({
 
   return (
     <div className="min-h-screen bg-[#FEFCF3]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm mb-6 overflow-x-auto">
           <Link 
@@ -387,39 +502,38 @@ export default async function CategoryPage({
             Home
           </Link>
           <span className="text-[#3d2c28]/30">/</span>
-          <Link 
+          {/* <Link 
             href="/product-category" 
             className="text-[#3d2c28]/60 hover:text-[#DBA39A] transition-colors whitespace-nowrap"
           >
             Categories
           </Link>
-          <span className="text-[#3d2c28]/30">/</span>
+          <span className="text-[#3d2c28]/30">/</span> */}
           <span className="text-[#DBA39A] font-medium whitespace-nowrap">
             {category.name}
           </span>
         </nav>
 
         {/* Category Header */}
-        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg">
-          <div className="relative aspect-[3/1] w-full min-h-[200px]">
+        <div className="relative rounded-sm overflow-hidden mb-8 shadow-lg">
+          <div className="relative aspect-3/1 w-full h-52">
             <img
-              src={category.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(category.name)}&size=1200&background=DBA39A&color=ffffff&bold=true`}
+              src={ `https://res.cloudinary.com/dz1m2mfnv/image/upload/v1782948255/CAtegory_banner_mc3vtq.png`}
               alt={category.name}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent flex items-center">
+            <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/30 to-transparent flex items-center">
               <div className="text-white px-6 md:px-12 max-w-2xl">
                 <h1 className="text-3xl md:text-5xl font-bold mb-2">
                   {category.name}
                 </h1>
-                {category.description && (
                   <p className="text-lg md:text-xl mb-4 text-white/90">
-                    {category.description}
+                    {`Get up to 30% off on ${category.name} products!`}
                   </p>
-                )}
-                <p className="text-sm text-white/70">
+                
+                {/* <p className="text-sm text-white/70">
                   {productsData.total} products available
-                </p>
+                </p> */}
               </div>
             </div>
           </div>

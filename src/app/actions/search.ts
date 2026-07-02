@@ -1,5 +1,6 @@
 'use server';
 
+import { mockCategories } from '@/components/CategoriesSection';
 import { db } from '@/lib/db';
 
 interface SearchParams {
@@ -124,22 +125,24 @@ export async function getSearchSuggestions(query: string) {
       take: 8,
     });
 
-    const categories = await db.product.findMany({
-      where: {
-        category: { contains: query, mode: 'insensitive' },
-      },
-      select: {
-        category: true,
-      },
-      distinct: ['category'],
-      take: 4,
-    });
+    // const categories = await db.product.findMany({
+    //   where: {
+    //     category: { contains: query, mode: 'insensitive' },
+    //   },
+    //   select: {
+    //     category: true,
+    //   },
+    //   distinct: ['category'],
+    //   take: 4,
+    // });
+
+    const categories= mockCategories
 
     return {
       success: true,
       suggestions: {
         products,
-        categories: categories.map(c => c.category),
+        categories: categories.map(c => c.name),
       },
     };
   } catch (error) {

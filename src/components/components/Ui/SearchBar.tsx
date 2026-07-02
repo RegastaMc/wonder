@@ -149,7 +149,7 @@ const SearchBar = () => {
         <button
           onClick={handleSearch}
           disabled={!query.trim()}
-          className='absolute right-1.5 flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-1.5 text-sm font-medium text-white transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed'
+          className='absolute right-1.5 flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-1.5 text-sm font-medium text-white transition-all hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed'
         >
           <Search className='h-4 w-4' />
           <span className='hidden sm:inline'>Search</span>

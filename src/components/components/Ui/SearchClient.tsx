@@ -7,7 +7,9 @@ import Link from 'next/link'
 import { Search, X, TrendingUp, Package, Tag, Loader2 } from 'lucide-react'
 import { searchProducts, getSearchSuggestions } from '@/app/actions/search'
 import { debounce } from 'lodash'
-import categories from '@/lib/Categories'
+import { mockCategories } from '@/components/CategoriesSection'
+
+
 
 interface Product {
   id: string
@@ -94,6 +96,8 @@ const SearchClient = ({
     ),
     [router],
   )
+
+  const categories = mockCategories
 
   // Get suggestions as user types
   const fetchSuggestions = useCallback(
