@@ -60,9 +60,9 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
   categories,
   autoSlideInterval = 2000,
   itemsPerView = {
-    mobile: 2,
-    tablet: 3,
-    desktop: 4,
+    mobile: 3,
+    tablet: 4,
+    desktop: 5,
     largeDesktop: 6,
   },
   onCategoryClick,
@@ -280,7 +280,7 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({
             <div
               key={`${category.id}-${index}`}
               className="shrink-0 px-1"
-              style={{ width: `${100 / 8}%` }}
+              style={{ width: `${100 / visibleItems}%` }}
             >
               <CategoryCard
                 category={category}
@@ -359,7 +359,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
       {/* Category Image - Fully Rounded */}
       <button
         onClick={() => onCategoryClick(category)}
-        className="group relative w-full aspect-square max-w-[200px] mx-auto"
+        className="group relative w-full aspect-square max-w-50 mx-auto"
         aria-label={`Browse ${category.name}`}
       >
         <div className="w-full h-full rounded-full overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-300 border-4 border-white">
@@ -576,9 +576,9 @@ const CategoriesSection: React.FC = () => {
         categories={mockCategories}
         autoSlideInterval={2000}
         itemsPerView={{
-          mobile: 2,
-          tablet: 3,
-          desktop: 4,
+          mobile: 3,
+          tablet: 4,
+          desktop: 5,
           largeDesktop: 6,
         }}
         onCategoryClick={handleCategoryClick}

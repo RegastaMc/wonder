@@ -21,8 +21,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: ' - Best Clothes',
-  description: 'Trendlama is the best place to find the best clothes',
+  title: 'Wink & Wonder',
+  description: 'Wink & Wonder is a premium online store that offers a curated selection of high-quality sexual wellness products.',
 }
 
 export default function RootLayout({
