@@ -60,6 +60,7 @@ const PaymentForm = ({
             checked={selectedMethod === 'CASH_ON_DELIVERY'}
             onChange={() => onPaymentMethodSelect('CASH_ON_DELIVERY')}
             className='mt-1'
+            disabled
           />
           <div className='flex-1'>
             <div className='flex items-center gap-2 mb-2'>

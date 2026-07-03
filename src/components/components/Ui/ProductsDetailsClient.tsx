@@ -168,7 +168,7 @@ const ProductDetailsClient = ({ product }: ProductDetailsClientProps) => {
           </h1>
 
           {/* Rating (Placeholder - you can implement actual ratings) */}
-          <div className='flex items-center gap-2'>
+          {/* <div className='flex items-center gap-2'>
             <div className='flex items-center'>
               {[...Array(5)].map((_, i) => (
                 <Star
@@ -178,12 +178,12 @@ const ProductDetailsClient = ({ product }: ProductDetailsClientProps) => {
               ))}
             </div>
             <span className='text-sm text-gray-500'>5.0 (12 reviews)</span>
-          </div>
+          </div> */}
 
           {/* Price */}
           <div className='flex items-baseline gap-3'>
             <span className='text-3xl font-bold text-gray-900'>
-              Ksh.{displayPrice.toLocaleString()}
+              Ksh.{displayPrice.toFixed(0).toLocaleString()}
             </span>
             {hasOffer && (
               <>
@@ -263,7 +263,7 @@ const ProductDetailsClient = ({ product }: ProductDetailsClientProps) => {
           )}
 
           {/* Action Icons */}
-          <div className='flex gap-4 pt-4'>
+          {/* <div className='flex gap-4 pt-4'>
             <button
               onClick={() => setIsWishlisted(!isWishlisted)}
               className={`flex items-center gap-2 text-sm transition ${
@@ -284,7 +284,7 @@ const ProductDetailsClient = ({ product }: ProductDetailsClientProps) => {
               <Share2 className='w-5 h-5' />
               Share
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -293,8 +293,8 @@ const ProductDetailsClient = ({ product }: ProductDetailsClientProps) => {
         <div className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'>
           <Truck className='w-8 h-8 text-blue-600' />
           <div>
-            <h4 className='font-semibold text-gray-900'>Free Shipping</h4>
-            <p className='text-sm text-gray-500'>On orders over Ksh.5000</p>
+            <h4 className='font-semibold text-gray-900'>Reliable Shipping</h4>
+            <p className='text-sm text-gray-500'>On All Orders</p>
           </div>
         </div>
         <div className='flex items-center gap-3 p-4 bg-gray-50 rounded-lg'>

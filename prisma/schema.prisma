@@ -108,6 +108,7 @@ model Product {
     category    String
     price       Float
     offerPrice  Float?
+    slug        String? @unique
 
     orderItems OrderItem[]
 

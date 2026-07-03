@@ -5043,6 +5043,7 @@ export namespace Prisma {
     category: string | null
     price: number | null
     offerPrice: number | null
+    slug: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5055,6 +5056,7 @@ export namespace Prisma {
     category: string | null
     price: number | null
     offerPrice: number | null
+    slug: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5068,6 +5070,7 @@ export namespace Prisma {
     category: number
     price: number
     offerPrice: number
+    slug: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5092,6 +5095,7 @@ export namespace Prisma {
     category?: true
     price?: true
     offerPrice?: true
+    slug?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5104,6 +5108,7 @@ export namespace Prisma {
     category?: true
     price?: true
     offerPrice?: true
+    slug?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5117,6 +5122,7 @@ export namespace Prisma {
     category?: true
     price?: true
     offerPrice?: true
+    slug?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -5217,6 +5223,7 @@ export namespace Prisma {
     category: string
     price: number
     offerPrice: number | null
+    slug: string | null
     createdAt: Date
     updatedAt: Date
     _count: ProductCountAggregateOutputType | null
@@ -5249,6 +5256,7 @@ export namespace Prisma {
     category?: boolean
     price?: boolean
     offerPrice?: boolean
+    slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     orderItems?: boolean | Product$orderItemsArgs<ExtArgs>
@@ -5264,6 +5272,7 @@ export namespace Prisma {
     category?: boolean
     price?: boolean
     offerPrice?: boolean
+    slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["product"]>
@@ -5277,6 +5286,7 @@ export namespace Prisma {
     category?: boolean
     price?: boolean
     offerPrice?: boolean
+    slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["product"]>
@@ -5290,11 +5300,12 @@ export namespace Prisma {
     category?: boolean
     price?: boolean
     offerPrice?: boolean
+    slug?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "isAvailable" | "desc" | "images" | "category" | "price" | "offerPrice" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "isAvailable" | "desc" | "images" | "category" | "price" | "offerPrice" | "slug" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orderItems?: boolean | Product$orderItemsArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
@@ -5316,6 +5327,7 @@ export namespace Prisma {
       category: string
       price: number
       offerPrice: number | null
+      slug: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["product"]>
@@ -5750,6 +5762,7 @@ export namespace Prisma {
     readonly category: FieldRef<"Product", 'String'>
     readonly price: FieldRef<"Product", 'Float'>
     readonly offerPrice: FieldRef<"Product", 'Float'>
+    readonly slug: FieldRef<"Product", 'String'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
   }
@@ -7362,6 +7375,7 @@ export namespace Prisma {
     category: 'category',
     price: 'price',
     offerPrice: 'offerPrice',
+    slug: 'slug',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -7903,6 +7917,7 @@ export namespace Prisma {
     category?: StringFilter<"Product"> | string
     price?: FloatFilter<"Product"> | number
     offerPrice?: FloatNullableFilter<"Product"> | number | null
+    slug?: StringNullableFilter<"Product"> | string | null
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     orderItems?: OrderItemListRelationFilter
@@ -7917,6 +7932,7 @@ export namespace Prisma {
     category?: SortOrder
     price?: SortOrder
     offerPrice?: SortOrderInput | SortOrder
+    slug?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     orderItems?: OrderItemOrderByRelationAggregateInput
@@ -7924,6 +7940,7 @@ export namespace Prisma {
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    slug?: string
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
@@ -7937,7 +7954,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     orderItems?: OrderItemListRelationFilter
-  }, "id">
+  }, "id" | "slug">
 
   export type ProductOrderByWithAggregationInput = {
     id?: SortOrder
@@ -7948,6 +7965,7 @@ export namespace Prisma {
     category?: SortOrder
     price?: SortOrder
     offerPrice?: SortOrderInput | SortOrder
+    slug?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ProductCountOrderByAggregateInput
@@ -7969,6 +7987,7 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"Product"> | string
     price?: FloatWithAggregatesFilter<"Product"> | number
     offerPrice?: FloatNullableWithAggregatesFilter<"Product"> | number | null
+    slug?: StringNullableWithAggregatesFilter<"Product"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
   }
@@ -8422,6 +8441,7 @@ export namespace Prisma {
     category: string
     price: number
     offerPrice?: number | null
+    slug?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemCreateNestedManyWithoutProductInput
@@ -8436,6 +8456,7 @@ export namespace Prisma {
     category: string
     price: number
     offerPrice?: number | null
+    slug?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutProductInput
@@ -8450,6 +8471,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     offerPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUpdateManyWithoutProductNestedInput
@@ -8464,6 +8486,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     offerPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutProductNestedInput
@@ -8478,6 +8501,7 @@ export namespace Prisma {
     category: string
     price: number
     offerPrice?: number | null
+    slug?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8491,6 +8515,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     offerPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8504,6 +8529,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     offerPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9186,6 +9212,7 @@ export namespace Prisma {
     category?: SortOrder
     price?: SortOrder
     offerPrice?: SortOrder
+    slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9203,6 +9230,7 @@ export namespace Prisma {
     category?: SortOrder
     price?: SortOrder
     offerPrice?: SortOrder
+    slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -9215,6 +9243,7 @@ export namespace Prisma {
     category?: SortOrder
     price?: SortOrder
     offerPrice?: SortOrder
+    slug?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -10189,6 +10218,7 @@ export namespace Prisma {
     category: string
     price: number
     offerPrice?: number | null
+    slug?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10202,6 +10232,7 @@ export namespace Prisma {
     category: string
     price: number
     offerPrice?: number | null
+    slug?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -10290,6 +10321,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     offerPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10303,6 +10335,7 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     price?: FloatFieldUpdateOperationsInput | number
     offerPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

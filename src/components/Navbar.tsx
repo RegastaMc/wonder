@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import Image from 'next/image'
-import Link from 'next/link'
-import { Bell, Home, LogOut, Search, User } from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import { useEffect, useRef, useState } from 'react'
-import SearchBar from './components/Ui/SearchBar'
-import AccountDropdown from './AccountDropdown'
-import CartSlide from './CartSlide'
-import { useRouter } from 'next/navigation'
-import { mockCategories } from './CategoriesSection'
+import Image from 'next/image';
+import Link from 'next/link';
+import { Bell, Home, LogOut, Search, User } from 'lucide-react';
+import { signOut, useSession } from 'next-auth/react';
+import { useEffect, useRef, useState } from 'react';
+import SearchBar from './components/Ui/SearchBar';
+import AccountDropdown from './AccountDropdown';
+import CartSlide from './CartSlide';
+import { useRouter, usePathname } from 'next/navigation';
+import { mockCategories } from './CategoriesSection';
 
 interface NavItem {
   label: string;
@@ -17,20 +17,21 @@ interface NavItem {
 }
 
 // --- Data ---
-const categories = mockCategories
+const categories = mockCategories;
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const menuRef = useRef<HTMLDivElement>(null)
-  const { data: session, status } = useSession()
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const user = (session?.user as any) || null
+  const user = (session?.user as any) || null;
 
-  const router = useRouter()
-
-
+  // Check if current path is an admin page
+  const isAdminPage = pathname?.includes('/admin') || pathname?.includes('/dashboard');
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -39,7 +40,7 @@ export default function Navbar() {
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsDropdownOpen(false)
+        setIsDropdownOpen(false);
       }
       // Close mobile menu
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -48,11 +49,11 @@ export default function Navbar() {
           setIsMenuOpen(false);
         }
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Close on escape key
   useEffect(() => {
@@ -69,13 +70,22 @@ export default function Navbar() {
   const toggleMenu = (): void => setIsMenuOpen((prev) => !prev);
   const closeMenu = (): void => setIsMenuOpen(false);
 
-  const Register=() => { 
-   router.push('/signup')
+  const Register = () => {
+    router.push('/signup');
+  };
+
+  const Login = () => {
+    router.push('/signin');
+  };
+
+  // If on admin page, don't render the navbar
+  if (isAdminPage) {
+    return null;
   }
 
-  const Login=() => { 
-   router.push('/signin')
-  }
+ const handleSignOut = async () => {
+  await signOut({ callbackUrl: '/' });
+}
 
   return (
     <nav className='sticky top-0 z-50 w-full bg-[#FEFCF3] border-b border-[#F5EBEO] shadow-sm'>
@@ -108,7 +118,10 @@ export default function Navbar() {
             </button>
 
             {/* Logo */}
-             <div className="logo-font text-2xl md:text-3xl cursor-pointer tracking-tight text-[#DBA39A]" onClick={()=>router.push('/')}>
+            <div 
+              className="logo-font text-2xl md:text-3xl cursor-pointer tracking-tight text-[#DBA39A]" 
+              onClick={() => router.push('/')}
+            >
               <span className="font-serif-italic font-light text-[#b28b7a]">✧</span>
               <span className="font-bold">Wink&</span>
               <span className="font-serif-italic">Wonder</span>
@@ -116,7 +129,7 @@ export default function Navbar() {
 
             {/* Desktop Categories */}
             <div className="hidden md:flex items-center space-x-1 ml-6 text-sm font-medium">
-              {categories.map((category,index) => (
+              {categories.map((category, index) => (
                 <Link
                   key={`${category.slug}-${index}`}
                   href={`/product-category/${category.slug}`}
@@ -131,7 +144,7 @@ export default function Navbar() {
           {/* RIGHT SECTION */}
           <div className='flex items-center gap-3 md:gap-4'>
             {/* Account Dropdown */}
-            <AccountDropdown onSignIn={Login} onSignUp={Register} user={user} />
+            <AccountDropdown onSignIn={Login} onSignUp={Register} user={user} onSignOut={handleSignOut} />
 
             {/* Cart Slide */}
             <CartSlide />
@@ -211,5 +224,5 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }

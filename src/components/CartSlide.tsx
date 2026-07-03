@@ -225,7 +225,7 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
                         className="flex gap-4 p-3 rounded-xl border border-[#F5EBEO] hover:border-[#DBA39A]/30 transition-all bg-white"
                       >
                         {/* Image */}
-                        <div className="flex-shrink-0 w-20 h-20 bg-[#FEFCF3] rounded-xl overflow-hidden border border-[#F5EBEO] relative">
+                        <div className="shrink-0 w-20 h-20 bg-[#FEFCF3] rounded-xl overflow-hidden border border-[#F5EBEO] relative">
                           <Image
                             src={imageUrl}
                             alt={item.name}
@@ -308,19 +308,19 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
                   <span>Subtotal</span>
                   <span>Ksh.{subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-[#3d2c28]/60">
+                {/* <div className="flex justify-between text-[#3d2c28]/60">
                   <span>Tax (16%)</span>
                   <span>Ksh.{tax.toFixed(2)}</span>
-                </div>
+                </div> */}
                 <div className="flex justify-between text-[#3d2c28]/60">
                   <span>Shipping Fee</span>
-                  <span>{shippingFee === 0 ? 'Free' : `Ksh.${shippingFee.toFixed(2)}`}</span>
+                  <span>{shippingFee === 0 ? 'To be Negotiated' : `Ksh.${shippingFee.toFixed(2)}`}</span>
                 </div>
-                {subtotal > 0 && subtotal < 5000 && (
+                {/* {subtotal > 0 && subtotal < 5000 && (
                   <p className="text-xs text-[#DBA39A]">
-                    💡 Add Ksh.{(5000 - subtotal).toFixed(2)} more for free shipping
+                    Add Ksh.{(5000 - subtotal).toFixed(2)} more for free shipping
                   </p>
-                )}
+                )} */}
                 <div className="border-t border-[#F5EBEO] pt-3 flex justify-between font-bold text-[#3d2c28]">
                   <span>Total</span>
                   <span className="text-[#DBA39A] text-lg">Ksh.{total.toFixed(2)}</span>
@@ -351,10 +351,10 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
               </div>
 
               {/* Secure checkout note */}
-              <p className="text-center text-xs text-[#3d2c28]/40 mt-3 flex items-center justify-center gap-1">
+              {/* <p className="text-center text-xs text-[#3d2c28]/40 mt-3 flex items-center justify-center gap-1">
                 <span>🔒</span>
                 Secure checkout - Free shipping over Ksh.5,000
-              </p>
+              </p> */}
             </div>
           )}
         </div>

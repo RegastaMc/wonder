@@ -39,7 +39,7 @@ export default function RootLayout({
           <div className='mx-auto sm:px-0 '>
             <Navbar />
             {children}
-            {/* <Footer />/ */}
+            <Footer />/
           </div>
         </SessionProvider>
         <ToastContainer position='bottom-right' />

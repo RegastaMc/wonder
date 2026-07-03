@@ -128,6 +128,8 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  
+
   // Close on escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -189,7 +191,7 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
   // };
 
   // Check if user has admin or staff role
-  const isAdmin = user?.role === 'ADMIN' || user?.role === 'USER';
+  const isAdmin = user?.role === 'ADMIN' 
 
   // Build menu items based on authentication status
   const getMenuItems = (): MenuItem[] => {
@@ -211,31 +213,31 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
     }
 
     const items: MenuItem[] = [
-      {
-        label: 'My Account',
-        icon: <Icons.User />,
-        href: '/account',
-        divider: false,
-      },
+      // {
+      //   label: 'My Account',
+      //   icon: <Icons.User />,
+      //   href: '/my-account',
+      //   divider: false,
+      // },
       {
         label: 'My Orders',
         icon: <Icons.Orders />,
-        href: '/orders',
+        href: '/my-orders',
         divider: false,
       },
     
-      {
-        label: 'My Addresses',
-        icon: <Icons.Addresses />,
-        href: '/addresses',
-        divider: false,
-      },
-      {
-        label: 'Settings',
-        icon: <Icons.Settings />,
-        href: '/settings',
-        divider: false,
-      },
+      // {
+      //   label: 'My Addresses',
+      //   icon: <Icons.Addresses />,
+      //   href: '/addresses',
+      //   divider: false,
+      // },
+      // {
+      //   label: 'Settings',
+      //   icon: <Icons.Settings />,
+      //   href: '/settings',
+      //   divider: false,
+      // },
     ];
 
     // Add admin/staff items
@@ -244,46 +246,46 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
         {
           label: 'Dashboard',
           icon: <Icons.Dashboard />,
-          href: '/admin/dashboard',
+          href: `/admin/dashboard/${user.id}/overview`,
           divider: true,
         },
-        {
-          label: 'Products',
-          icon: <Icons.Products />,
-          href: '/admin/products',
-          divider: false,
-        },
-        {
-          label: 'Orders',
-          icon: <Icons.Orders />,
-          href: '/admin/orders',
-          divider: false,
-        },
-        {
-          label: 'Customers',
-          icon: <Icons.Customers />,
-          href: '/admin/customers',
-          divider: false,
-        },
-        {
-          label: 'Inventory',
-          icon: <Icons.Inventory />,
-          href: '/admin/inventory',
-          divider: false,
-        },
-        {
-          label: 'Reports',
-          icon: <Icons.Reports />,
-          href: '/admin/reports',
-          divider: false,
-        },
+        // {
+        //   label: 'Products',
+        //   icon: <Icons.Products />,
+        //   href: '/admin/products',
+        //   divider: false,
+        // },
+        // {
+        //   label: 'Orders',
+        //   icon: <Icons.Orders />,
+        //   href: '/admin/orders',
+        //   divider: false,
+        // },
+        // {
+        //   label: 'Customers',
+        //   icon: <Icons.Customers />,
+        //   href: '/admin/customers',
+        //   divider: false,
+        // },
+        // {
+        //   label: 'Inventory',
+        //   icon: <Icons.Inventory />,
+        //   href: '/admin/inventory',
+        //   divider: false,
+        // },
+        // {
+        //   label: 'Reports',
+        //   icon: <Icons.Reports />,
+        //   href: '/admin/reports',
+        //   divider: false,
+        // },
        
-        {
-          label: 'Site Settings',
-          icon: <Icons.Settings />,
-          href: '/admin/settings',
-          divider: false,
-        }
+        // {
+        //   label: 'Site Settings',
+        //   icon: <Icons.Settings />,
+        //   href: '/admin/settings',
+        //   divider: false,
+        // }
       );
     }
 
@@ -401,7 +403,7 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
                   <p className="text-xs text-[#3d2c28]/60 truncate">{user.email}</p>
                   {isAdmin && (
                     <span className="text-xs bg-[#DBA39A]/10 text-[#DBA39A] px-2 py-0.5 rounded-full font-medium">
-                      {user.role === 'ADMIN' ? 'Administrator' : 'Staff'}
+                      {user.role === 'ADMIN' ? 'ADMIN' : 'Staff'}
                     </span>
                   )}
                 </div>
@@ -453,7 +455,7 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
           </div>
 
           {/* Footer - Quick actions */}
-          {user && (
+          {/* {user && (
             <div className="border-t border-[#F5EBEO] px-4 py-2 mt-1">
               <div className="flex items-center justify-between text-xs text-[#3d2c28]/40">
                 <span>Logged in</span>
@@ -469,7 +471,7 @@ const AccountDropdown: React.FC<AccountDropdownProps> = ({
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       )}
     </div>
