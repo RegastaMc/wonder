@@ -193,8 +193,7 @@ export async function getFeaturedProducts(limit: number = 6): Promise<any[]> {
   try {
     const products = await db.product.findMany({
       where: {
-        isAvailable: true,
-        isFeatured: true,
+        isAvailable: true,       
       },
       orderBy: {
         createdAt: 'desc',
