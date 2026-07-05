@@ -96,20 +96,20 @@ export default function Footer() {
             {/* Contact Info */}
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm text-[#3d2c28]/70">
-                <MapPin className="h-4 w-4 text-[#DBA39A] flex-shrink-0" />
+                <MapPin className="h-4 w-4 text-[#DBA39A] shrink-0" />
                 <span>CBD Nairobi, Kenya</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-[#3d2c28]/70">
-                <Phone className="h-4 w-4 text-[#DBA39A] flex-shrink-0" />
-                <span>+254 700 123 456</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm text-[#3d2c28]/70">
-                <Mail className="h-4 w-4 text-[#DBA39A] flex-shrink-0" />
+              <Link href="tel:+254717755910" className="flex items-center gap-3 text-sm text-[#3d2c28]/70 hover:text-[#DBA39A] transition-colors">
+                <Phone className="h-4 w-4 text-[#DBA39A] shrink-0" />
+                <span>+254 717755910</span>
+              </Link>
+              <Link href="mailto:winkandwonder9@gmail.com" className="flex items-center gap-3 text-sm text-[#3d2c28]/70 hover:text-[#DBA39A] transition-colors">
+                <Mail className="h-4 w-4 text-[#DBA39A] shrink-0" />
                 <span>winkandwonder9@gmail.com</span>
-              </div>
+              </Link>
               <div className="flex items-center gap-3 text-sm text-[#3d2c28]/70">
-                <Clock className="h-4 w-4 text-[#DBA39A] flex-shrink-0" />
-                <span>Mon - Sun: 9:00 AM - 6:00 PM</span>
+                <Clock className="h-4 w-4 text-[#DBA39A] shrink-0" />
+                <span>Mon - Mon 24/7</span>
               </div>
             </div>
 
