@@ -24,7 +24,7 @@ const ShippingForm = ({
 
   const { data: session } = useSession()
 
-  const email = session?.user?.email || ''
+  let email = session?.user?.email 
 
   const handleShippingForm: SubmitHandler<ShippingFormInputs> = (data) => {
     setShippingForm(data)
@@ -41,10 +41,10 @@ const ShippingForm = ({
           Name
         </label>
         <input
-          className='border-b border-gray-200 py-2 outline-none text-sm'
+          className='border-b border-gray-200 py-2 outline-none text-sm placeholder:text-gray-200'
           type='text'
           id='name'
-          placeholder='John kamau'
+          placeholder='i.e John Doe'
           {...register('name')}
         />
         {errors.name && (
@@ -56,10 +56,10 @@ const ShippingForm = ({
           Email
         </label>
         <input
-          className='border-b border-gray-200 py-2 outline-none text-sm'
+          className='border-b border-gray-200 py-2 outline-none text-sm placeholder:text-gray-200'
           type='email'
           id='email'
-          placeholder='johnkamau@gmail.com'
+          placeholder='i.e example@gmail.com'
           {...register('email')}
           value={email}
         />
@@ -72,10 +72,10 @@ const ShippingForm = ({
           Phone
         </label>
         <input
-          className='border-b border-gray-200 py-2 outline-none text-sm'
+          className='border-b border-gray-200 py-2 outline-none text-sm placeholder:text-gray-200'
           type='text'
           id='phone'
-          placeholder='0712345678'
+          placeholder='i.e 0712345678'
           {...register('phone')}
         />
         {errors.phone && (
@@ -87,10 +87,10 @@ const ShippingForm = ({
           Address
         </label>
         <input
-          className='border-b border-gray-200 py-2 outline-none text-sm'
+          className='border-b border-gray-200 py-2 outline-none text-sm placeholder:text-gray-200'
           type='text'
           id='address'
-          placeholder='Ruiru,Kiambu'
+          placeholder='i.e Ruiru,Kiambu'
           {...register('address')}
         />
         {errors.address && (
@@ -102,10 +102,10 @@ const ShippingForm = ({
           City
         </label>
         <input
-          className='border-b border-gray-200 py-2 outline-none text-sm'
+          className='border-b border-gray-200 py-2 outline-none text-sm placeholder:text-gray-200'
           type='text'
           id='city'
-          placeholder='Thika'
+          placeholder='i.e Thika'
           {...register('city')}
         />
         {errors.city && (

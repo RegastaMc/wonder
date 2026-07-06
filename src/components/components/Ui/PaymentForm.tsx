@@ -39,7 +39,7 @@ const PaymentForm = ({
               <span className='font-medium'>M-Pesa</span>
             </div>
             <p className='text-sm text-gray-600'>
-              Pay using M-Pesa mobile money. You`&apos;`ll receive a prompt on your
+              Pay using M-Pesa mobile money. You&apos;ll receive a prompt on your
               phone.
             </p>
           </div>

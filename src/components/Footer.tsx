@@ -109,7 +109,7 @@ export default function Footer() {
               </Link>
               <div className="flex items-center gap-3 text-sm text-[#3d2c28]/70">
                 <Clock className="h-4 w-4 text-[#DBA39A] shrink-0" />
-                <span>Mon - Mon 24/7</span>
+                <span>Mon - Sun: 24/7</span>
               </div>
             </div>
 

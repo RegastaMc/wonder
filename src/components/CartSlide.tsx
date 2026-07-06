@@ -131,7 +131,7 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const tax = subtotal * 0.16; // 16% VAT
   const shippingFee = subtotal < 5000 ? 200 : 0;
-  const total = subtotal + tax + shippingFee;
+  const total = subtotal  
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -314,7 +314,7 @@ const CartSlide: React.FC<CartSlideProps> = ({ onOpen, onClose, className = '' }
                 </div> */}
                 <div className="flex justify-between text-[#3d2c28]/60">
                   <span>Shipping Fee</span>
-                  <span>{shippingFee === 0 ? 'To be Negotiated' : `Ksh.${shippingFee.toFixed(2)}`}</span>
+                  <span>{shippingFee === 0 ? 'To be Negotiated' : `To be Negotiated`}</span>
                 </div>
                 {/* {subtotal > 0 && subtotal < 5000 && (
                   <p className="text-xs text-[#DBA39A]">

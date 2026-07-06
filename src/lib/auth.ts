@@ -3,6 +3,7 @@ import NextAuth from 'next-auth'
 import type { DefaultSession } from 'next-auth'
 
 import Credentials from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 import { db } from './db'
 import { userRole } from '../../prisma/src/lib/prisma/client'
 
@@ -31,6 +32,35 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     strategy: 'jwt',
   },
   providers: [
+     GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+
+      async profile(profile) {
+        const user = await db.user.upsert({
+          where: { email: profile.email },
+          update: {
+            name: profile.name,
+            image: profile.picture as string,
+            passwordhash: '',
+          },
+          create: {
+            email: profile.email,
+            name: profile.name,
+            image: profile.picture as string,
+            passwordhash: '',
+          },
+        })
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image as string,
+          role: user.role as unknown as userRole,
+          username: user.username ?? '',
+        }
+      },
+    }),
     Credentials({
       authorize: async (credentials) => {
         // ensure we have credentials and a string password

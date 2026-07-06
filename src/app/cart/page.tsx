@@ -214,10 +214,10 @@ const CartContent = () => {
               <p className="text-gray-500">Subtotal</p>
               <p className="font-medium">Ksh {subtotal.toFixed(2)}</p>
             </div>
-            {/* <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-sm">
               <p className="text-gray-500">Tax (VAT)</p>
               <p className="font-medium">Ksh {tax.toFixed(2)}</p>
-            </div> */}
+            </div>
             <div className="flex justify-between text-sm">
               <p className="text-gray-500">Shipping Fee</p>
               <p className="font-medium">
@@ -281,6 +281,9 @@ const CartContent = () => {
   );
 };
 
+// ============================================================
+// MAIN CART PAGE WITH SUSPENSE BOUNDARY
+// ============================================================
 const CartPage = () => {
   return (
     <Suspense fallback={<CartLoading />}>
