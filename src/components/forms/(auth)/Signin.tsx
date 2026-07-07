@@ -158,7 +158,8 @@ export default function Signin() {
   const handleGoogleSignin = async () => {
     setGoogleLoading(true);
     try {
-      await signIn('google', { callbackUrl: '/dashboard' });
+      await signIn('google', { callbackUrl: '/' });
+      toast.success('Redirecting to Google for sign in...');
     } catch (error) {
       toast.error('Failed to sign in with Google');
       console.error('Google signin error:', error);

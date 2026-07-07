@@ -1,9 +1,10 @@
 'use client'
 
-import categories from '@/lib/Categories'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const cats = categories
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { mockCategories } from './CategoriesSection'
+
+const cats = mockCategories
 
 const Categories = () => {
   const searchParams = useSearchParams()
@@ -69,7 +70,7 @@ const Categories = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {category.Icon && <category.Icon />}
+            {/* {category.image && <category.image />} */}
             {category.name}
           </button>
         ))}

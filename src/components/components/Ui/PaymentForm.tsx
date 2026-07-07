@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { CreditCard, Truck, Smartphone } from 'lucide-react'
 
 interface PaymentFormProps {
