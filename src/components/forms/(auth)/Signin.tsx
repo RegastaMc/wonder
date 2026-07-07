@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import type { SVGProps } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -59,11 +59,19 @@ export default function Signin() {
     rememberMe: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [callbackUrl, setCallbackUrl] = useState<string>('/');
+  
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // ============================================================
-  // VALIDATION
-  // ============================================================
+  // Get callbackUrl from URL params
+  useEffect(() => {
+    const callback = searchParams.get('callbackUrl');
+    if (callback) {
+      setCallbackUrl(callback);
+    }
+  }, [searchParams]);
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
@@ -82,9 +90,6 @@ export default function Signin() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ============================================================
-  // HANDLE INPUT CHANGE
-  // ============================================================
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -102,9 +107,6 @@ export default function Signin() {
     }
   };
 
-  // ============================================================
-  // HANDLE FORM SUBMISSION
-  // ============================================================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -114,34 +116,24 @@ export default function Signin() {
     setError(false);
     setErrorMsg('');
 
-    const submitFormData = new FormData();
-    submitFormData.append('email', formData.email);
-    submitFormData.append('password', formData.password);
-    submitFormData.append('rememberMe', String(formData.rememberMe));
-
     try {
-      const res = await fetch('/api/auth/signin', {
-        method: 'POST',
-        body: submitFormData,
+      const result = await signIn('credentials', {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+        callbackUrl: callbackUrl,
       });
 
-      const data = await res.json();
-      if (res.ok) {
-        toast.success(data.message || 'Signed in successfully!');
-        setLoading(false);
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      } else if (!res.ok && res.status === 401) {
-        toast.error(data.message || 'Invalid credentials.');
+      if (result?.error) {
+        toast.error(result.error || 'Invalid credentials.');
         setLoading(false);
         setError(true);
-        setErrorMsg(data.message || 'Invalid email or password');
+        setErrorMsg(result.error || 'Invalid email or password');
       } else {
-        toast.error(data.message || 'An error occurred during sign in.');
+        toast.success('Signed in successfully!');
         setLoading(false);
-        setError(true);
-        setErrorMsg(data.message || 'Something went wrong. Please try again.');
+        // Redirect to callback URL
+        router.push(callbackUrl);
       }
     } catch (error) {
       console.error('Sign in error:', error);
@@ -158,12 +150,13 @@ export default function Signin() {
   const handleGoogleSignin = async () => {
     setGoogleLoading(true);
     try {
-      await signIn('google', { callbackUrl: '/' });
-      toast.success('Redirecting to Google for sign in...');
+      await signIn('google', { 
+        callbackUrl: callbackUrl,
+        redirect: true,
+      });
     } catch (error) {
       toast.error('Failed to sign in with Google');
       console.error('Google signin error:', error);
-    } finally {
       setGoogleLoading(false);
     }
   };
@@ -180,9 +173,11 @@ export default function Signin() {
           {/* Header */}
           <div className="text-center space-y-2">
             <h2 className="text-2xl font-bold text-[#3d2c28]">Welcome Back</h2>
-            {/* <p className="text-sm text-[#3d2c28]/60">
-              Sign in to your account to continue
-            </p> */}
+            {callbackUrl !== '/' && (
+              <p className="text-sm text-[#DBA39A] font-medium">
+                Continue to checkout
+              </p>
+            )}
           </div>
 
           {/* Error Message */}

@@ -57,8 +57,8 @@ const CartContent = () => {
 
   const handlePlaceOrder = async () => {
     if (!session?.user?.id) {
-      toast.error('Please login to continue');
-      router.push('/signin');
+      toast.error('Please login to continue and place your order');
+      router.push('/signin?callbackUrl=/cart?step=3');
       return;
     }
 
