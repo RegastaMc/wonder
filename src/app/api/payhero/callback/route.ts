@@ -72,9 +72,9 @@ export async function POST(req: NextRequest) {
     let order = await db.order.findFirst({
       where: {
         OR: [
-          { paymentId: reference },
+          { mpesaReceiptNumber: reference },
           { orderNumber: { contains: reference } },
-          { paymentId: body.external_reference || '' },
+          { mpesaResultCode: body.external_reference || '' },
         ],
       },
       include: {
