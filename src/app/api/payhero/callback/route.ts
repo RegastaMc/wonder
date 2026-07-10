@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
     let order = await db.order.findFirst({
       where: {
         OR: [
-          { paymentId: checkoutId || reference },
-          { id: metadata?.orderId || '' },
+          { mpesaTransactionId: checkoutId || reference },
+          { id: metadata?.order.id || '' },
         ],
       },
     });
