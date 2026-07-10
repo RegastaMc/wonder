@@ -91,22 +91,22 @@ export async function POST(req: NextRequest) {
     });
 
     // If order not found, try to find by metadata
-    if (!order && body.metadata?.orderId) {
-      order = await db.order.findUnique({
-        where: { id: body.metadata.orderId },
-        include: {
-          items: true,
-          user: {
-            select: {
-              id: true,
-              email: true,
-              firstName: true,
-              lastName: true,
-            },
-          },
-        },
-      });
-    }
+    // if (!order && body.metadata?.orderId) {
+    //   order = await db.order.findUnique({
+    //     where: { id: body.metadata.orderId },
+    //     include: {
+    //       items: true,
+    //       user: {
+    //         select: {
+    //           id: true,
+    //           email: true,
+    //           name: true,
+
+    //         },
+    //       },
+    //     },
+    //   });
+    // }
 
     // If still no order, log and acknowledge
     if (!order) {
