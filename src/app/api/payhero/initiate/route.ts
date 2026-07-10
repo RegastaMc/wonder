@@ -1,76 +1,59 @@
 // app/api/payhero/initiate/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/db';
 
-const PAYHERO_API_KEY = process.env.PAYHERO_API_KEY;
-const PAYHERO_API_URL = process.env.PAYHERO_API_URL || 'https://api.payhero.co.ke';
-const PAYHERO_ACCOUNT_NUMBER = process.env.PAYHERO_ACCOUNT_NUMBER;
+const PAYHERO_API_URL = 'https://backend.payhero.co.ke/api/v2/payments';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { amount, phoneNumber, email, reference, transactionType, orderId } = body;
 
     // Validate required fields
-    if (!amount || !phoneNumber) {
-      return NextResponse.json({
-        success: false,
-        error: 'Amount and phone number are required',
-      }, { status: 400 });
+    const requiredFields = ['amount', 'phoneNumber', 'channel_id', 'provider'];
+    for (const field of requiredFields) {
+      if (!body[field]) {
+        return NextResponse.json({
+          success: false,
+          error: `Missing required field: ${field}`,
+        }, { status: 400 });
+      }
     }
 
-    // Prepare the request payload for PayHero
+   
     const payload = {
-      account_number: PAYHERO_ACCOUNT_NUMBER || body.accountNumber,
-      amount: amount,
-      phone_number: phoneNumber,
-      reference: reference || `ORD-${Date.now()}`,
-      transaction_type: transactionType || 'paybill',
-      callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/api/payhero/callback`,
-      email: email || '',
-      metadata: {
-        orderId: orderId || '',
-        userId: body.userId || '',
-      },
+      amount: body.amount, 
+      phone_number: body.phoneNumber, 
+      channel_id: body.channel_id, 
+      provider: body.provider, 
+      external_reference: body.external_reference || `ORD-${Date.now()}`,
+      customer_name: body.customer_name || 'Customer',
+      callback_url: body.callback_url || process.env.PAYHERO_CALLBACK_URL,
     };
 
-    // Make request to PayHero API
-    const response = await fetch(`${PAYHERO_API_URL}/payments/initiate`, {
+    const response = await fetch(PAYHERO_API_URL, {
       method: 'POST',
       headers: {
+        'Authorization': "Basic bTdnRFNPQzhLWW5tdm42MXB2SWM6U3dORTlhYjFyeHNlb21jcVpxcWZjQ3UyU2VMbnFqRlhBcU5LSEVqdQ==",
         'Content-Type': 'application/json',
-        'x-api-key': PAYHERO_API_KEY!,
       },
       body: JSON.stringify(payload),
     });
 
     const data = await response.json();
 
-    if (response.ok && data.success) {
-      // Update order with checkout ID if orderId is provided
-      if (orderId) {
-        await db.order.update({
-          where: { id: orderId },
-          data: {
-            paymentId: data.data.checkoutId || data.data.reference,
-            paymentStatus: 'PENDING',
-          },
-        });
-      }
-
+    if (response.status === 201 && data.success) {
       return NextResponse.json({
         success: true,
         data: {
-          checkoutId: data.data.checkoutId || data.data.reference,
-          status: data.data.status || 'pending',
-          message: data.message || 'Payment initiated successfully',
+          reference: data.reference,
+          checkoutId: data.reference || data.CheckoutRequestID,
+          status: data.status,
         },
       });
     } else {
-      console.error('PayHero initiation error:', data);
+      console.error('PayHero API error:', data);
       return NextResponse.json({
         success: false,
-        error: data.message || 'Failed to initiate payment',
+        error: data.error || data.message || 'Payment initiation failed',
         details: data,
       }, { status: response.status || 400 });
     }

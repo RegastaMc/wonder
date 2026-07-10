@@ -1,9 +1,9 @@
-// app/api/payhero/status/[checkoutId]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
-const PAYHERO_API_KEY = process.env.PAYHERO_API_KEY;
-const PAYHERO_API_URL = process.env.PAYHERO_API_URL || 'https://api.payhero.co.ke';
+const PAYHERO_API_URL = 'https://backend.payhero.co.ke/api/v2/payments';
+const PAYHERO_AUTH_TOKEN = process.env.PAYHERO_AUTH_TOKEN;
+
 
 export async function GET(
   req: NextRequest,
@@ -16,59 +16,109 @@ export async function GET(
       return NextResponse.json({
         success: false,
         error: 'Checkout ID is required',
+        status: 'error',
       }, { status: 400 });
     }
 
-    // Query PayHero for payment status
-    const response = await fetch(`${PAYHERO_API_URL}/payments/status/${checkoutId}`, {
+    console.log(`Checking payment status for checkout ID: ${checkoutId}`);
+
+    // Option 1: Check with PayHero API directly
+    const payHeroResponse = await fetch(`${PAYHERO_API_URL}/status/${checkoutId}`, {
       method: 'GET',
       headers: {
-        'x-api-key': PAYHERO_API_KEY!,
+        'Authorization': PAYHERO_AUTH_TOKEN!,
+        'Content-Type': 'application/json',
       },
     });
 
-    const data = await response.json();
+    const payHeroData = await payHeroResponse.json();
 
-    if (response.ok) {
-      // If payment is successful, update order status
-      if (data.status === 'completed' || data.status === 'success') {
-        // Find order by payment ID
-        const order = await db.order.findFirst({
-          where: {
-            mpesaTransactionId: checkoutId,
+    if (payHeroResponse.ok) {
+      // Also check our local order status
+      const order = await db.order.findFirst({
+        where: {
+          OR: [
+            { mpesaReceiptNumber: checkoutId },
+            { mpesaResultCode: payHeroData.CheckoutRequestID || '' },
+          ],
+        },
+        select: {
+          id: true,
+          paymentStatus: true,
+          status: true,
+        },
+      });
+
+      // Combine both sources of truth
+      const status = payHeroData.status || payHeroData.data?.status || 'unknown';
+      const isCompleted = status === 'completed' || status === 'success';
+
+      // If PayHero says completed but our order isn't, update it
+      if (isCompleted && order && order.paymentStatus !== 'PAID') {
+        await db.order.update({
+          where: { id: order.id },
+          data: {
+            paymentStatus: 'PAID',
+            status: 'PROCESSING',
+            paidAt: new Date(),
           },
         });
-
-        if (order && order.paymentStatus !== 'PAID') {
-          await db.order.update({
-            where: { id: order.id },
-            data: {
-              paymentStatus: 'PAID',
-              status: 'PROCESSING',
-            },
-          });
-        }
       }
 
       return NextResponse.json({
         success: true,
-        status: data.status || data.data?.status || 'pending',
-        data: data.data || data,
+        status: status,
+        isCompleted,
+        data: payHeroData.data || payHeroData,
+        orderStatus: order?.paymentStatus || 'unknown',
       });
     } else {
-      console.error('PayHero status check error:', data);
+      // Option 2: Check our local database if PayHero API fails
+      const order = await db.order.findFirst({
+        where: {
+          OR: [
+            { mpesaReceiptNumber: checkoutId },
+            { mpesaResultCode: checkoutId },
+          ],
+        },
+        select: {
+          id: true,
+          paymentStatus: true,
+          status: true,
+          paidAt: true,
+          orderNumber: true,
+        },
+      });
+
+      if (order) {
+        return NextResponse.json({
+          success: true,
+          status: order.paymentStatus.toLowerCase(),
+          isCompleted: order.paymentStatus === 'PAID',
+          data: {
+            checkoutId,
+            orderId: order.id,
+            orderNumber: order.orderNumber,
+            paidAt: order.paidAt,
+          },
+        });
+      }
+
+      // If not found anywhere
       return NextResponse.json({
         success: false,
-        status: 'failed',
-        error: data.message || 'Failed to check payment status',
-      }, { status: response.status || 400 });
+        status: 'not_found',
+        isCompleted: false,
+        error: 'Payment checkout ID not found',
+      }, { status: 404 });
     }
 
   } catch (error) {
-    console.error('PayHero status check error:', error);
+    console.error('Status check error:', error);
     return NextResponse.json({
       success: false,
       status: 'error',
+      isCompleted: false,
       error: 'Failed to check payment status',
     }, { status: 500 });
   }

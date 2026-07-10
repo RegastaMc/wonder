@@ -51,7 +51,6 @@ const PayHeroMpesaModal = ({
 
   useEffect(() => {
     if (isOpen && checkoutId) {
-      // Start countdown
       const countdownTimer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -63,7 +62,6 @@ const PayHeroMpesaModal = ({
       }, 1000);
       setCountdownInterval(countdownTimer);
 
-      // Start polling for payment status
       const pollInterval = setInterval(async () => {
         try {
           const response = await fetch(`/api/payhero/status/${checkoutId}`);
@@ -74,9 +72,8 @@ const PayHeroMpesaModal = ({
             clearInterval(pollInterval);
             clearInterval(countdownTimer);
             
-            // Call the payment complete callback to create order
             if (onPaymentComplete) {
-              await onPaymentComplete();
+               onPaymentComplete();
             }
             
             setTimeout(() => {
@@ -335,19 +332,18 @@ const CartContent = () => {
       const payHeroResponse = await fetch('/api/payhero/initiate', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': "Basic bTdnRFNPQzhLWW5tdm42MXB2SWM6U3dORTlhYjFyeHNlb21jcVpxcWZjQ3UyU2VMbnFqRlhBcU5LSEVqdQ==",
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           amount: total,
           phoneNumber: shippingForm.phone,
-          email: shippingForm.email,
-          accountNumber: process.env.NEXT_PUBLIC_PAYHERO_ACCOUNT_NUMBER,
-          reference: `ORD-${Date.now().toString().slice(-8)}`,
-          transactionType: 'paybill',
-          metadata: {
-            userId: session.user.id,
-            email: shippingForm.email,
-          },
+          channel_id: 10302,
+          provider: 'm-pesa',
+          external_reference: `ORD-${Date.now().toString().slice(-8)}`,
+          customer_name: shippingForm.name,
+          callback_url: `https://winkandwonder.co.ke/api/payhero/callback`,
+         
         }),
       });
 
