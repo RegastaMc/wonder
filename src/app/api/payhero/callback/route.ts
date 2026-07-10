@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
             data: {
               paymentStatus: 'PAID',
               status: 'PROCESSING',
-              paymentId: body.transaction_id || reference,
+              mpesaReceiptNumber: body.transaction_id || reference,
               paidAt: new Date(),
               updatedAt: new Date(),
             },
