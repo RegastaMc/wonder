@@ -65,28 +65,28 @@ export async function createOrder(orderData: CreateOrderInput) {
       },
     })
 
-    if (orderData.paymentMethod === 'MPESA') {
-      const mpesaResponse = await initiateStkPush(
-        orderData.phone,
-        orderData.total,
-        orderNumber,
-        `Payment for order ${orderNumber}`,
-      )
+    // if (orderData.paymentMethod === 'MPESA') {
+    //   const mpesaResponse = await initiateStkPush(
+    //     orderData.phone,
+    //     orderData.total,
+    //     orderNumber,
+    //     `Payment for order ${orderNumber}`,
+    //   )
 
-      // Update order with M-Pesa checkout request ID
-      await db.order.update({
-        where: { id: order.id },
-        data: {
-          mpesaTransactionId: mpesaResponse.CheckoutRequestID,
-        },
-      })
+    //   // Update order with M-Pesa checkout request ID
+    //   await db.order.update({
+    //     where: { id: order.id },
+    //     data: {
+    //       mpesaTransactionId: mpesaResponse.CheckoutRequestID,
+    //     },
+    //   })
 
-      return {
-        success: true,
-        order,
-        mpesaResponse,
-      }
-    }
+    //   return {
+    //     success: true,
+    //     order,
+    //     mpesaResponse,
+    //   }
+    // }
 
     revalidatePath('/my-orders')
     return {

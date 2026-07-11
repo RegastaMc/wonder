@@ -18,14 +18,12 @@ const steps = [
   { id: 3, title: 'Payment Method' },
 ];
 
-
 const CartLoading = () => (
   <div className="flex flex-col gap-8 items-center justify-center mt-12">
     <div className="w-12 h-12 border-4 border-[#DBA39A] border-t-transparent rounded-full animate-spin"></div>
     <p className="text-[#3d2c28]/60">Loading cart...</p>
   </div>
 );
-
 
 const PayHeroMpesaModal = ({
   isOpen,
@@ -35,6 +33,8 @@ const PayHeroMpesaModal = ({
   amount,
   checkoutId,
   onPaymentComplete,
+  orderData,
+  createOrderFunction,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -43,11 +43,38 @@ const PayHeroMpesaModal = ({
   amount: number;
   checkoutId?: string;
   onPaymentComplete?: () => void;
+  orderData?: any;
+  createOrderFunction?: (data: any) => Promise<any>;
 }) => {
   const [status, setStatus] = useState<'pending' | 'success' | 'failed'>('pending');
   const [countdown, setCountdown] = useState(60);
   const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
   const [countdownInterval, setCountdownInterval] = useState<NodeJS.Timeout | null>(null);
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false);
+
+  const handleCreateOrder = async () => {
+    if (!orderData || !createOrderFunction) return;
+    
+    setIsCreatingOrder(true);
+    try {
+      const result = await createOrderFunction(orderData);
+      if (result.success) {
+        toast.success('Order created successfully!');
+        onPaymentComplete?.();
+        onSuccess();
+        onClose();
+      } else {
+        toast.error(result.error || 'Failed to create order');
+        setStatus('failed');
+      }
+    } catch (error) {
+      console.error('Order creation error:', error);
+      toast.error('Failed to create order');
+      setStatus('failed');
+    } finally {
+      setIsCreatingOrder(false);
+    }
+  };
 
   useEffect(() => {
     if (isOpen && checkoutId) {
@@ -67,24 +94,37 @@ const PayHeroMpesaModal = ({
           const response = await fetch(`/api/payhero/status/${checkoutId}`);
           const data = await response.json();
 
-          if (data.status === 'completed' || data.status === 'success') {
+          console.log('Payment status response:', data);
+
+          // Check if payment was successful
+          const isSuccess = data.status === 'completed' || 
+                           data.status === 'success' ||
+                           data.data?.status === 'COMPLETED' ||
+                           data.data?.status === 'SUCCESS' ||
+                           data.data?.status === 'PAID';
+
+          if (isSuccess) {
             setStatus('success');
             clearInterval(pollInterval);
             clearInterval(countdownTimer);
             
-            if (onPaymentComplete) {
-               onPaymentComplete();
-            }
+            // Create the order now that payment is successful
+            await handleCreateOrder();
             
-            setTimeout(() => {
-              onSuccess();
-              onClose();
-            }, 1500);
-          } else if (data.status === 'failed' || data.status === 'cancelled') {
+            return;
+          }
+
+          // Check if payment failed
+          const isFailed = data.status === 'failed' || 
+                          data.status === 'cancelled' ||
+                          data.data?.status === 'FAILED' ||
+                          data.data?.status === 'CANCELLED';
+
+          if (isFailed) {
             setStatus('failed');
             clearInterval(pollInterval);
             clearInterval(countdownTimer);
-            toast.error('Payment failed. Please try again.');
+            toast.error(data.data?.message || 'Payment failed. Please try again.');
           }
         } catch (error) {
           console.error('Status check error:', error);
@@ -98,7 +138,7 @@ const PayHeroMpesaModal = ({
         if (countdownTimer) clearInterval(countdownTimer);
       };
     }
-  }, [isOpen, checkoutId, onSuccess, onClose, onPaymentComplete]);
+  }, [isOpen, checkoutId]);
 
   const handleCancel = () => {
     if (pollingInterval) clearInterval(pollingInterval);
@@ -113,7 +153,6 @@ const PayHeroMpesaModal = ({
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-[#F5EBEO] relative">
-        {/* Close Button */}
         <button
           onClick={handleCancel}
           className="absolute top-4 right-4 p-2 hover:bg-[#F5EBEO] rounded-xl transition-colors"
@@ -122,12 +161,19 @@ const PayHeroMpesaModal = ({
         </button>
 
         <div className="text-center">
-          {/* Icon */}
           <div className="mb-4">
-            {status === 'pending' && (
+            {status === 'pending' && !isCreatingOrder && (
               <div className="w-20 h-20 mx-auto relative">
                 <div className="w-20 h-20 border-4 border-[#DBA39A] border-t-transparent rounded-full animate-spin" />
                 <Smartphone className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8 text-[#DBA39A]" />
+              </div>
+            )}
+            {isCreatingOrder && (
+              <div className="w-20 h-20 mx-auto relative">
+                <div className="w-20 h-20 border-4 border-[#DBA39A] border-t-transparent rounded-full animate-spin" />
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs font-medium text-[#DBA39A]">
+                  Order
+                </span>
               </div>
             )}
             {status === 'success' && (
@@ -146,16 +192,16 @@ const PayHeroMpesaModal = ({
             )}
           </div>
 
-          {/* Title */}
           <h3 className="text-xl font-bold text-[#3d2c28] mb-2">
-            {status === 'pending' && 'Complete Payment on Your Phone'}
+            {isCreatingOrder && 'Creating your order...'}
+            {status === 'pending' && !isCreatingOrder && 'Complete Payment on Your Phone'}
             {status === 'success' && 'Payment Successful!'}
             {status === 'failed' && 'Payment Failed'}
           </h3>
 
-          {/* Description */}
           <p className="text-[#3d2c28]/60 text-sm">
-            {status === 'pending' && (
+            {isCreatingOrder && 'Please wait while we confirm your order.'}
+            {status === 'pending' && !isCreatingOrder && (
               <>
                 We've sent a payment request to your M-Pesa phone.
                 <br />
@@ -168,8 +214,7 @@ const PayHeroMpesaModal = ({
             {status === 'failed' && 'Your payment could not be processed. Please try again.'}
           </p>
 
-          {/* Payment Details */}
-          {status === 'pending' && (
+          {status === 'pending' && !isCreatingOrder && (
             <div className="mt-4 p-4 bg-[#F5EBEO]/50 rounded-xl text-sm space-y-2">
               <div className="flex justify-between">
                 <span className="text-[#3d2c28]/60">Phone Number</span>
@@ -188,15 +233,14 @@ const PayHeroMpesaModal = ({
             </div>
           )}
 
-          {/* Status Messages */}
-          {status === 'pending' && (
+          {status === 'pending' && !isCreatingOrder && (
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-600">
-              <p> Check your M-Pesa app for the payment prompt</p>
+              <p>📱 Check your M-Pesa app for the payment prompt</p>
               <p className="mt-1">Enter your PIN to complete the transaction</p>
             </div>
           )}
 
-          {status === 'pending' && (
+          {status === 'pending' && !isCreatingOrder && (
             <button
               onClick={handleCancel}
               className="mt-6 w-full px-6 py-3 border-2 border-[#F5EBEO] hover:border-red-300 rounded-xl font-medium transition-colors text-[#3d2c28]/60 hover:text-red-500"
@@ -224,7 +268,6 @@ const PayHeroMpesaModal = ({
   );
 };
 
-
 const CartContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -249,7 +292,6 @@ const CartContent = () => {
   const shippingFee = subtotal < 5000 ? 0 : 0;
   const total = subtotal + tax + shippingFee;
 
-  // Handle Cash on Delivery - Order is created immediately
   const handleCashOnDelivery = async () => {
     setIsProcessing(true);
     try {
@@ -270,7 +312,6 @@ const CartContent = () => {
         email: shippingForm?.email as string,
         shippingAddress: shippingForm,
         paymentMethod: 'CASH_ON_DELIVERY',
-        
       });
 
       if (result.success) {
@@ -287,7 +328,6 @@ const CartContent = () => {
     }
   };
 
-  // Handle M-Pesa Payment - Order is created only after successful payment
   const handleMpesaPayment = async () => {
     if (!session?.user?.id) {
       toast.error('Please login to continue and place your order');
@@ -304,14 +344,12 @@ const CartContent = () => {
     setIsProcessing(true);
 
     try {
-      // Prepare order data but don't create order yet
       const orderItems = cart.map((item) => ({
         productId: item.id,
         quantity: item.quantity,
         price: item.price,
       }));
 
-      // Store order data for later use
       const orderPayload = {
         userId: session.user.id,
         items: orderItems,
@@ -323,12 +361,10 @@ const CartContent = () => {
         email: shippingForm.email,
         shippingAddress: shippingForm,
         paymentMethod: 'MPESA',
-        paymentStatus: 'PENDING',
       };
 
       setOrderData(orderPayload);
 
-      // Initialize PayHero payment
       const payHeroResponse = await fetch('/api/payhero/initiate', {
         method: 'POST',
         headers: {
@@ -343,7 +379,6 @@ const CartContent = () => {
           external_reference: `ORD-${Date.now().toString().slice(-8)}`,
           customer_name: shippingForm.name,
           callback_url: `https://winkandwonder.co.ke/api/payhero/callback`,
-         
         }),
       });
 
@@ -363,34 +398,13 @@ const CartContent = () => {
     }
   };
 
-  // Handle successful payment - Create order after payment confirmation
   const handlePaymentSuccess = async () => {
-    try {
-      if (!orderData) {
-        toast.error('Order data missing. Please try again.');
-        return;
-      }
-
-      // Create order after successful payment
-      const result = await createOrder(orderData);
-
-      if (result.success) {
-        toast.success('Payment successful! Order confirmed.');
-        clearCart();
-        setShowPayHeroModal(false);
-        setPayHeroCheckoutId(undefined);
-        setOrderData(null);
-        router.push('/my-orders');
-      } else {
-        toast.error(result.error || 'Failed to create order');
-      }
-    } catch (error) {
-      console.error('Order creation error:', error);
-      toast.error('Failed to create order. Please contact support.');
-    }
+    setShowPayHeroModal(false);
+    setPayHeroCheckoutId(undefined);
+    setOrderData(null);
+    setIsProcessing(false);
   };
 
-  // Handle the Place Order click
   const handlePlaceOrder = () => {
     if (!session?.user?.id) {
       toast.error('Please login to continue and place your order');
@@ -574,7 +588,6 @@ const CartContent = () => {
         </div>
       </div>
 
-      {/* PayHero M-Pesa Payment Modal */}
       {showPayHeroModal && shippingForm && (
         <PayHeroMpesaModal
           isOpen={showPayHeroModal}
@@ -584,21 +597,23 @@ const CartContent = () => {
             setOrderData(null);
             setIsProcessing(false);
           }}
-          onSuccess={() => {
-            // This will be called after the payment is successful and order is created
+          onSuccess={handlePaymentSuccess}
+          onPaymentComplete={() => {
             setShowPayHeroModal(false);
             setPayHeroCheckoutId(undefined);
+            setOrderData(null);
+            setIsProcessing(false);
           }}
-          onPaymentComplete={handlePaymentSuccess}
           phoneNumber={shippingForm.phone}
           amount={total}
           checkoutId={payHeroCheckoutId}
+          orderData={orderData}
+          createOrderFunction={createOrder}
         />
       )}
     </div>
   );
 };
-
 
 const CartPage = () => {
   return (
