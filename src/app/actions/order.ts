@@ -50,7 +50,7 @@ export async function createOrder(orderData: CreateOrderInput) {
             ? 'PROCESSING'
             : 'PENDING',
         paymentStatus:
-          orderData.paymentMethod === 'CASH_ON_DELIVERY' ? 'PAID' : 'PENDING',
+          orderData.paymentMethod === 'CASH_ON_DELIVERY' ? 'PAID' : 'PAID',
         items: {
           create: orderData.items.map((item) => ({
             productId: item.productId,

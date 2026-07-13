@@ -200,6 +200,21 @@ exports.Prisma.ContactScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.BannerScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  subtitle: 'subtitle',
+  description: 'description',
+  image: 'image',
+  buttonText: 'buttonText',
+  buttonLink: 'buttonLink',
+  type: 'type',
+  isActive: 'isActive',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -264,12 +279,18 @@ exports.ContactStatus = exports.$Enums.ContactStatus = {
   ARCHIVED: 'ARCHIVED'
 };
 
+exports.BannerType = exports.$Enums.BannerType = {
+  PRIMARY: 'PRIMARY',
+  SECONDARY: 'SECONDARY'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Order: 'Order',
   OrderItem: 'OrderItem',
   Product: 'Product',
-  Contact: 'Contact'
+  Contact: 'Contact',
+  Banner: 'Banner'
 };
 
 /**

@@ -17,6 +17,7 @@ import {
   ChevronDown,
   UserCircle,
   HelpCircle,
+  TicketSlash,
 } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 import { toast } from 'react-toastify';
@@ -213,13 +214,19 @@ export default function AdminLayout({
       name: 'Overview',
       path: '/admin/dashboard/id/overview',
       icon: LayoutDashboard,
-      description: 'View your store metrics',
+      description: 'View your dashboard summary ',
     },
     {
       name: 'Products',
       path: '/admin/dashboard/id/products',
       icon: Package,
-      description: 'Manage your inventory',
+      description: 'Manage your products',
+    },
+    {
+      name: 'Banners',
+      path: '/admin/dashboard/id/banners',
+      icon: TicketSlash,
+      description: 'Manage homepage banners',
     },
     {
       name: 'Orders',
@@ -234,7 +241,7 @@ export default function AdminLayout({
     //   description: 'Customer messages',
     // },
     {
-      name: 'Customers',
+      name: 'Users',
       path: '/admin/dashboard/id/customers',
       icon: User,
       description: 'Manage your customer base',
