@@ -7,6 +7,7 @@ import Footer from '@/components/Footer'
 import { ToastContainer } from 'react-toastify'
 import { cn } from '@/lib/utils'
 import { SessionProvider } from 'next-auth/react'
+import FacebookPixel from '@/components/FacebookPixel'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           </div>
         </SessionProvider>
         <ToastContainer position='bottom-right' />
+        <FacebookPixel />
       </body>
     </html>
   )
