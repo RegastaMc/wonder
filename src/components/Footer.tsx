@@ -1,23 +1,23 @@
 // components/Footer.tsx
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Facebook,
+  Twitter,
+  Instagram,
   Youtube,
   Heart,
   Shield,
   Truck,
   CreditCard,
-  ChevronRight
-} from 'lucide-react';
+  ChevronRight,
+} from "lucide-react";
 
 // ============================================================
 // TYPES
@@ -37,39 +37,56 @@ interface SocialLink {
 // DATA
 // ============================================================
 const quickLinks: FooterLink[] = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact Us', href: '/contact' },
-  { label: 'FAQs', href: '/faqs' },
-  { label: 'Shipping Policy', href: '/shipping-policy' },
-  { label: 'Returns & Refunds', href: '/returns' },
-  { label: 'Privacy Policy', href: '/privacy-policy' },
-  { label: 'Terms of Service', href: '/terms' },
+  { label: "About Us", href: "/about" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "FAQs", href: "/faqs" },
+  { label: "Shipping Policy", href: "/shipping-policy" },
+  { label: "Returns & Refunds", href: "/returns" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms of Service", href: "/terms" },
 ];
 
 const categoryLinks: FooterLink[] = [
-  { label: 'Women', href: '/product-category/women' },
-  { label: 'Men', href: '/product-category/men' },
-  { label: 'Couples', href: '/product-category/couples' },
-  { label: 'Combos', href: '/product-category/combos' },
-  { label: 'BDSM', href: '/product-category/bdsm' },
-  { label: 'Lingerie', href: '/product-category/sexy-underwear-and-lingerie' },
-  { label: 'Flowers', href: '/product-category/flowers' },
+  { label: "Women", href: "/product-category/women" },
+  { label: "Men", href: "/product-category/men" },
+  { label: "Couples", href: "/product-category/couples" },
+  { label: "Combos", href: "/product-category/combos" },
+  { label: "BDSM", href: "/product-category/bdsm" },
+  { label: "Lingerie", href: "/product-category/sexy-underwear-and-lingerie" },
+  { label: "Flowers", href: "/product-category/flowers" },
 ];
 
 const socialLinks: SocialLink[] = [
-  { name: 'Facebook', href: 'https://facebook.com', icon: <Facebook className="h-5 w-5" /> },
-  { name: 'Twitter', href: 'https://twitter.com', icon: <Twitter className="h-5 w-5" /> },
-  { name: 'Instagram', href: 'https://instagram.com', icon: <Instagram className="h-5 w-5" /> },
-  { name: 'YouTube', href: 'https://youtube.com', icon: <Youtube className="h-5 w-5" /> },
+  {
+    name: "Facebook",
+    href: "https://facebook.com",
+    icon: <Facebook className="h-5 w-5" />,
+  },
+  {
+    name: "Twitter",
+    href: "https://twitter.com",
+    icon: <Twitter className="h-5 w-5" />,
+  },
+  {
+    name: "Instagram",
+    href: "https://instagram.com",
+    icon: <Instagram className="h-5 w-5" />,
+  },
+  {
+    name: "YouTube",
+    href: "https://youtube.com",
+    icon: <Youtube className="h-5 w-5" />,
+  },
 ];
-
 
 export default function Footer() {
   const pathname = usePathname();
 
   // Check if current page is signin/signup or admin/dashboard
-  const isAuthPage = pathname?.includes('/signin') || pathname?.includes('/signup');
-  const isAdminPage = pathname?.includes('/admin') || pathname?.includes('/dashboard');
+  const isAuthPage =
+    pathname?.includes("/signin") || pathname?.includes("/signup");
+  const isAdminPage =
+    pathname?.includes("/admin") || pathname?.includes("/dashboard");
 
   // Hide footer on auth pages and admin pages
   if (isAuthPage || isAdminPage) {
@@ -84,26 +101,34 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="space-y-4">
             <div className="logo-font text-2xl tracking-tight text-[#DBA39A]">
-              <span className="font-serif-italic font-light text-[#b28b7a]">✧</span>
+              <span className="font-serif-italic font-light text-[#b28b7a]">
+                ✧
+              </span>
               <span className="font-bold">Wink&</span>
               <span className="font-serif-italic">Wonder</span>
             </div>
             <p className="text-sm text-[#3d2c28]/60 max-w-xs">
-              Your one-stop shop for premium adult toys and accessories. 
-              Explore our curated collection designed for pleasure and intimacy.
+              Your one-stop shop for premium adult toys and accessories. Explore
+              our curated collection designed for pleasure and intimacy.
             </p>
-            
+
             {/* Contact Info */}
             <div className="space-y-2">
               <div className="flex items-center gap-3 text-sm text-[#3d2c28]/70">
                 <MapPin className="h-4 w-4 text-[#DBA39A] shrink-0" />
                 <span>CBD Nairobi, Kenya</span>
               </div>
-              <Link href="tel:+254717755910" className="flex items-center gap-3 text-sm text-[#3d2c28]/70 hover:text-[#DBA39A] transition-colors">
+              <Link
+                href="tel:+254717755910"
+                className="flex items-center gap-3 text-sm text-[#3d2c28]/70 hover:text-[#DBA39A] transition-colors"
+              >
                 <Phone className="h-4 w-4 text-[#DBA39A] shrink-0" />
-                <span>+254 717755910</span>
+                <span>+254 141867004</span>
               </Link>
-              <Link href="mailto:winkandwonder9@gmail.com" className="flex items-center gap-3 text-sm text-[#3d2c28]/70 hover:text-[#DBA39A] transition-colors">
+              <Link
+                href="mailto:winkandwonder9@gmail.com"
+                className="flex items-center gap-3 text-sm text-[#3d2c28]/70 hover:text-[#DBA39A] transition-colors"
+              >
                 <Mail className="h-4 w-4 text-[#DBA39A] shrink-0" />
                 <span>winkandwonder9@gmail.com</span>
               </Link>
@@ -230,17 +255,26 @@ export default function Footer() {
             <p className="text-sm text-[#3d2c28]/40 text-center sm:text-left">
               © {new Date().getFullYear()} Wink & Wonder. All rights reserved.
             </p>
-            
+
             <div className="flex items-center gap-4 text-xs text-[#3d2c28]/40">
-              <Link href="/privacy-policy" className="hover:text-[#DBA39A] transition-colors">
+              <Link
+                href="/privacy-policy"
+                className="hover:text-[#DBA39A] transition-colors"
+              >
                 Privacy Policy
               </Link>
               <span className="w-px h-3 bg-[#F5EBEO]" />
-              <Link href="/terms" className="hover:text-[#DBA39A] transition-colors">
+              <Link
+                href="/terms"
+                className="hover:text-[#DBA39A] transition-colors"
+              >
                 Terms of Service
               </Link>
               <span className="w-px h-3 bg-[#F5EBEO]" />
-              <Link href="/cookies" className="hover:text-[#DBA39A] transition-colors">
+              <Link
+                href="/cookies"
+                className="hover:text-[#DBA39A] transition-colors"
+              >
                 Cookies
               </Link>
             </div>
@@ -249,10 +283,18 @@ export default function Footer() {
             <div className="flex items-center gap-2 text-xs text-[#3d2c28]/40">
               <span className="font-medium">We Accept:</span>
               <span className="flex items-center gap-1">
-                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">Visa</span>
-                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">MC</span>
-                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">Amex</span>
-                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">M-Pesa</span>
+                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">
+                  Visa
+                </span>
+                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">
+                  MC
+                </span>
+                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">
+                  Amex
+                </span>
+                <span className="px-1.5 py-0.5 bg-[#F5EBEO] rounded text-[10px]">
+                  M-Pesa
+                </span>
               </span>
             </div>
           </div>
