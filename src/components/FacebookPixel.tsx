@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 // import * as pixel from "../../lib/fpixel";
 import * as pixel from "../lib/fpixel";
 
-
 const FacebookPixel = () => {
   const [loaded, setLoaded] = useState(false);
   const pathname = usePathname();

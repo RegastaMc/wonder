@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import ShippingForm from '@/components/ShippingForm';
-import useCartStore from '@/stores/cartStore';
-import { ShippingFormInputs } from '@/types';
-import { ArrowRight, Trash2, Smartphone, X } from 'lucide-react';
-import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, Suspense, useEffect } from 'react';
-import { createOrder } from '@/app/actions/order';
-import { toast } from 'react-toastify';
-import { useSession } from 'next-auth/react';
-import PaymentForm from '@/components/components/Ui/PaymentForm';
+import ShippingForm from "@/components/ShippingForm";
+import useCartStore from "@/stores/cartStore";
+import { ShippingFormInputs } from "@/types";
+import { ArrowRight, Trash2, Smartphone, X } from "lucide-react";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, Suspense, useEffect } from "react";
+import { createOrder } from "@/app/actions/order";
+import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import PaymentForm from "@/components/components/Ui/PaymentForm";
 
 const steps = [
-  { id: 1, title: 'Shopping Cart' },
-  { id: 2, title: 'Shipping Address' },
-  { id: 3, title: 'Payment Method' },
+  { id: 1, title: "Shopping Cart" },
+  { id: 2, title: "Shipping Address" },
+  { id: 3, title: "Payment Method" },
 ];
 
 const CartLoading = () => (
@@ -46,31 +46,36 @@ const PayHeroMpesaModal = ({
   orderData?: any;
   createOrderFunction?: (data: any) => Promise<any>;
 }) => {
-  const [status, setStatus] = useState<'pending' | 'success' | 'failed'>('pending');
+  const [status, setStatus] = useState<"pending" | "success" | "failed">(
+    "pending",
+  );
   const [countdown, setCountdown] = useState(60);
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
-  const [countdownInterval, setCountdownInterval] = useState<NodeJS.Timeout | null>(null);
+  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(
+    null,
+  );
+  const [countdownInterval, setCountdownInterval] =
+    useState<NodeJS.Timeout | null>(null);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
 
   const handleCreateOrder = async () => {
     if (!orderData || !createOrderFunction) return;
-    
+
     setIsCreatingOrder(true);
     try {
       const result = await createOrderFunction(orderData);
       if (result.success) {
-        toast.success('Order created successfully!');
+        toast.success("Order created successfully!");
         onPaymentComplete?.();
         onSuccess();
         onClose();
       } else {
-        toast.error(result.error || 'Failed to create order');
-        setStatus('failed');
+        toast.error(result.error || "Failed to create order");
+        setStatus("failed");
       }
     } catch (error) {
-      console.error('Order creation error:', error);
-      toast.error('Failed to create order');
-      setStatus('failed');
+      console.error("Order creation error:", error);
+      toast.error("Failed to create order");
+      setStatus("failed");
     } finally {
       setIsCreatingOrder(false);
     }
@@ -94,40 +99,44 @@ const PayHeroMpesaModal = ({
           const response = await fetch(`/api/payhero/status/${checkoutId}`);
           const data = await response.json();
 
-          console.log('Payment status response:', data);
+          console.log("Payment status response:", data);
 
           // Check if payment was successful
-          const isSuccess = data.status === 'completed' || 
-                           data.status === 'success' ||
-                           data.data?.status === 'COMPLETED' ||
-                           data.data?.status === 'SUCCESS' ||
-                           data.data?.status === 'PAID';
+          const isSuccess =
+            data.status === "completed" ||
+            data.status === "success" ||
+            data.data?.status === "COMPLETED" ||
+            data.data?.status === "SUCCESS" ||
+            data.data?.status === "PAID";
 
           if (isSuccess) {
-            setStatus('success');
+            setStatus("success");
             clearInterval(pollInterval);
             clearInterval(countdownTimer);
-            
+
             // Create the order now that payment is successful
             await handleCreateOrder();
-            
+
             return;
           }
 
           // Check if payment failed
-          const isFailed = data.status === 'failed' || 
-                          data.status === 'cancelled' ||
-                          data.data?.status === 'FAILED' ||
-                          data.data?.status === 'CANCELLED';
+          const isFailed =
+            data.status === "failed" ||
+            data.status === "cancelled" ||
+            data.data?.status === "FAILED" ||
+            data.data?.status === "CANCELLED";
 
           if (isFailed) {
-            setStatus('failed');
+            setStatus("failed");
             clearInterval(pollInterval);
             clearInterval(countdownTimer);
-            toast.error(data.data?.message || 'Payment failed. Please try again.');
+            toast.error(
+              data.data?.message || "Payment failed. Please try again.",
+            );
           }
         } catch (error) {
-          console.error('Status check error:', error);
+          console.error("Status check error:", error);
         }
       }, 3000);
 
@@ -143,8 +152,8 @@ const PayHeroMpesaModal = ({
   const handleCancel = () => {
     if (pollingInterval) clearInterval(pollingInterval);
     if (countdownInterval) clearInterval(countdownInterval);
-    setStatus('failed');
-    toast.info('Payment cancelled');
+    setStatus("failed");
+    toast.info("Payment cancelled");
     onClose();
   };
 
@@ -162,7 +171,7 @@ const PayHeroMpesaModal = ({
 
         <div className="text-center">
           <div className="mb-4">
-            {status === 'pending' && !isCreatingOrder && (
+            {status === "pending" && !isCreatingOrder && (
               <div className="w-20 h-20 mx-auto relative">
                 <div className="w-20 h-20 border-4 border-[#DBA39A] border-t-transparent rounded-full animate-spin" />
                 <Smartphone className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-8 text-[#DBA39A]" />
@@ -176,71 +185,102 @@ const PayHeroMpesaModal = ({
                 </span>
               </div>
             )}
-            {status === 'success' && (
+            {status === "success" && (
               <div className="w-20 h-20 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-                <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-10 h-10 text-green-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
             )}
-            {status === 'failed' && (
+            {status === "failed" && (
               <div className="w-20 h-20 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-                <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-10 h-10 text-red-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </div>
             )}
           </div>
 
           <h3 className="text-xl font-bold text-[#3d2c28] mb-2">
-            {isCreatingOrder && 'Creating your order...'}
-            {status === 'pending' && !isCreatingOrder && 'Complete Payment on Your Phone'}
-            {status === 'success' && 'Payment Successful!'}
-            {status === 'failed' && 'Payment Failed'}
+            {isCreatingOrder && "Creating your order..."}
+            {status === "pending" &&
+              !isCreatingOrder &&
+              "Complete Payment on Your Phone"}
+            {status === "success" && "Payment Successful!"}
+            {status === "failed" && "Payment Failed"}
           </h3>
 
           <p className="text-[#3d2c28]/60 text-sm">
-            {isCreatingOrder && 'Please wait while we confirm your order.'}
-            {status === 'pending' && !isCreatingOrder && (
+            {isCreatingOrder && "Please wait while we confirm your order."}
+            {status === "pending" && !isCreatingOrder && (
               <>
                 We've sent a payment request to your M-Pesa phone.
                 <br />
                 <span className="font-medium text-[#3d2c28]">
-                  Please check your phone and enter your M-Pesa PIN to complete the payment.
+                  Please check your phone and enter your M-Pesa PIN to complete
+                  the payment.
                 </span>
               </>
             )}
-            {status === 'success' && 'Your payment has been confirmed. Order placed successfully!'}
-            {status === 'failed' && 'Your payment could not be processed. Please try again.'}
+            {status === "success" &&
+              "Your payment has been confirmed. Order placed successfully!"}
+            {status === "failed" &&
+              "Your payment could not be processed. Please try again."}
           </p>
 
-          {status === 'pending' && !isCreatingOrder && (
+          {status === "pending" && !isCreatingOrder && (
             <div className="mt-4 p-4 bg-[#F5EBEO]/50 rounded-xl text-sm space-y-2">
               <div className="flex justify-between">
                 <span className="text-[#3d2c28]/60">Phone Number</span>
-                <span className="font-medium text-[#3d2c28]">{phoneNumber}</span>
+                <span className="font-medium text-[#3d2c28]">
+                  {phoneNumber}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#3d2c28]/60">Amount</span>
-                <span className="font-bold text-[#DBA39A]">Ksh {amount.toFixed(2)}</span>
+                <span className="font-bold text-[#DBA39A]">
+                  Ksh {amount.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-[#3d2c28]/60">Time Remaining</span>
-                <span className={`font-medium ${countdown < 10 ? 'text-red-500' : 'text-[#3d2c28]'}`}>
+                <span
+                  className={`font-medium ${countdown < 10 ? "text-red-500" : "text-[#3d2c28]"}`}
+                >
                   {countdown}s
                 </span>
               </div>
             </div>
           )}
 
-          {status === 'pending' && !isCreatingOrder && (
+          {status === "pending" && !isCreatingOrder && (
             <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-600">
               <p>📱 Check your M-Pesa app for the payment prompt</p>
               <p className="mt-1">Enter your PIN to complete the transaction</p>
             </div>
           )}
 
-          {status === 'pending' && !isCreatingOrder && (
+          {status === "pending" && !isCreatingOrder && (
             <button
               onClick={handleCancel}
               className="mt-6 w-full px-6 py-3 border-2 border-[#F5EBEO] hover:border-red-300 rounded-xl font-medium transition-colors text-[#3d2c28]/60 hover:text-red-500"
@@ -249,17 +289,17 @@ const PayHeroMpesaModal = ({
             </button>
           )}
 
-          {(status === 'success' || status === 'failed') && (
+          {(status === "success" || status === "failed") && (
             <button
               onClick={() => {
-                if (status === 'success') {
+                if (status === "success") {
                   onSuccess();
                 }
                 onClose();
               }}
               className="mt-6 w-full px-6 py-3 bg-[#DBA39A] hover:bg-[#c49087] text-white font-medium rounded-xl transition-colors shadow-md hover:shadow-lg"
             >
-              {status === 'success' ? 'Continue Shopping' : 'Try Again'}
+              {status === "success" ? "Continue Shopping" : "Try Again"}
             </button>
           )}
         </div>
@@ -274,14 +314,14 @@ const CartContent = () => {
   const { data: session } = useSession();
   const [shippingForm, setShippingForm] = useState<ShippingFormInputs>();
   const [paymentMethod, setPaymentMethod] = useState<
-    'MPESA' | 'CASH_ON_DELIVERY'
+    "MPESA" | "CASH_ON_DELIVERY"
   >();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showPayHeroModal, setShowPayHeroModal] = useState(false);
   const [payHeroCheckoutId, setPayHeroCheckoutId] = useState<string>();
   const [orderData, setOrderData] = useState<any>(null);
 
-  const activeStep = parseInt(searchParams.get('step') || '1');
+  const activeStep = parseInt(searchParams.get("step") || "1");
   const { cart, removeFromCart, clearCart } = useCartStore();
 
   const subtotal = cart.reduce(
@@ -292,6 +332,7 @@ const CartContent = () => {
   const shippingFee = subtotal < 5000 ? 0 : 0;
   const total = subtotal + tax + shippingFee;
 
+  // Cash on Delivery - creates order immediately without payment
   const handleCashOnDelivery = async () => {
     setIsProcessing(true);
     try {
@@ -311,33 +352,34 @@ const CartContent = () => {
         phone: shippingForm?.phone as string,
         email: shippingForm?.email as string,
         shippingAddress: shippingForm,
-        paymentMethod: 'CASH_ON_DELIVERY',
+        paymentMethod: "CASH_ON_DELIVERY",
       });
 
       if (result.success) {
-        toast.success('Order placed successfully!');
+        toast.success("Order placed successfully! Pay on delivery.");
         clearCart();
-        router.push(`/`);
+        router.push(`/my-orders`);
       } else {
-        toast.error(result.error || 'Failed to place order');
+        toast.error(result.error || "Failed to place order");
       }
     } catch (error) {
-      toast.error('Failed to place order. Please try again.');
+      toast.error("Failed to place order. Please try again.");
     } finally {
       setIsProcessing(false);
     }
   };
 
+  // M-Pesa Payment - initiates payment first, creates order after successful payment
   const handleMpesaPayment = async () => {
     if (!session?.user?.id) {
-      toast.error('Please login to continue and place your order');
-      router.push('/signin?callbackUrl=/cart?step=3');
+      toast.error("Please login to continue and place your order");
+      router.push("/signin?callbackUrl=/cart?step=3");
       return;
     }
 
     if (!shippingForm) {
-      toast.error('Please fill in shipping information');
-      router.push('/cart?step=2');
+      toast.error("Please fill in shipping information");
+      router.push("/cart?step=2");
       return;
     }
 
@@ -360,22 +402,23 @@ const CartContent = () => {
         phone: shippingForm.phone,
         email: shippingForm.email,
         shippingAddress: shippingForm,
-        paymentMethod: 'MPESA',
+        paymentMethod: "MPESA",
       };
 
       setOrderData(orderPayload);
 
-      const payHeroResponse = await fetch('/api/payhero/initiate', {
-        method: 'POST',
+      const payHeroResponse = await fetch("/api/payhero/initiate", {
+        method: "POST",
         headers: {
-          'Authorization': "Basic bTdnRFNPQzhLWW5tdm42MXB2SWM6U3dORTlhYjFyeHNlb21jcVpxcWZjQ3UyU2VMbnFqRlhBcU5LSEVqdQ==",
-          'Content-Type': 'application/json'
+          Authorization:
+            "Basic bTdnRFNPQzhLWW5tdm42MXB2SWM6U3dORTlhYjFyeHNlb21jcVpxcWZjQ3UyU2VMbnFqRlhBcU5LSEVqdQ==",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           amount: total,
           phoneNumber: shippingForm.phone,
           channel_id: 10302,
-          provider: 'm-pesa',
+          provider: "m-pesa",
           external_reference: `ORD-${Date.now().toString().slice(-8)}`,
           customer_name: shippingForm.name,
           callback_url: `https://winkandwonder.co.ke/api/payhero/callback`,
@@ -388,12 +431,12 @@ const CartContent = () => {
         setPayHeroCheckoutId(payHeroData.data.checkoutId);
         setShowPayHeroModal(true);
       } else {
-        toast.error(payHeroData.error || 'Failed to initiate payment');
+        toast.error(payHeroData.error || "Failed to initiate payment");
         setIsProcessing(false);
       }
     } catch (error) {
-      console.error('Payment error:', error);
-      toast.error('Failed to process payment. Please try again.');
+      console.error("Payment error:", error);
+      toast.error("Failed to process payment. Please try again.");
       setIsProcessing(false);
     }
   };
@@ -403,29 +446,35 @@ const CartContent = () => {
     setPayHeroCheckoutId(undefined);
     setOrderData(null);
     setIsProcessing(false);
+    clearCart();
+    router.push("/");
   };
 
   const handlePlaceOrder = () => {
+    // Validate session
     if (!session?.user?.id) {
-      toast.error('Please login to continue and place your order');
-      router.push('/signin?callbackUrl=/cart?step=3');
+      toast.error("Please login to continue and place your order");
+      router.push("/signin?callbackUrl=/cart?step=3");
       return;
     }
 
+    // Validate shipping form
     if (!shippingForm) {
-      toast.error('Please fill in shipping information');
-      router.push('/cart?step=2');
+      toast.error("Please fill in shipping information");
+      router.push("/cart?step=2");
       return;
     }
 
+    // Validate payment method selection
     if (!paymentMethod) {
-      toast.error('Please select a payment method');
+      toast.error("Please select a payment method");
       return;
     }
 
-    if (paymentMethod === 'CASH_ON_DELIVERY') {
+    // Route to appropriate handler based on payment method
+    if (paymentMethod === "CASH_ON_DELIVERY") {
       handleCashOnDelivery();
-    } else if (paymentMethod === 'MPESA') {
+    } else if (paymentMethod === "MPESA") {
       handleMpesaPayment();
     }
   };
@@ -438,20 +487,20 @@ const CartContent = () => {
         {steps.map((step) => (
           <div
             className={`flex items-center gap-2 border-b-2 pb-4 ${
-              step.id === activeStep ? 'border-gray-800' : 'border-gray-200'
+              step.id === activeStep ? "border-gray-800" : "border-gray-200"
             }`}
             key={step.id}
           >
             <div
               className={`w-6 h-6 rounded-full text-white p-4 flex items-center justify-center ${
-                step.id === activeStep ? 'bg-gray-800' : 'bg-gray-400'
+                step.id === activeStep ? "bg-gray-800" : "bg-gray-400"
               }`}
             >
               {step.id}
             </div>
             <p
               className={`text-sm font-medium ${
-                step.id === activeStep ? 'text-gray-800' : 'text-gray-400'
+                step.id === activeStep ? "text-gray-800" : "text-gray-400"
               }`}
             >
               {step.title}
@@ -463,8 +512,8 @@ const CartContent = () => {
       <div className="w-full flex flex-col lg:flex-row gap-16">
         {/* Left Column - Steps Content */}
         <div className="w-full lg:w-7/12 shadow-lg border border-gray-100 p-8 rounded-lg flex flex-col gap-8">
-          {activeStep === 1 ? (
-            cart.length > 0 ? (
+          {activeStep === 1 ?
+            cart.length > 0 ?
               cart.map((item) => (
                 <div
                   className="flex items-center justify-between"
@@ -473,7 +522,7 @@ const CartContent = () => {
                   <div className="flex gap-8">
                     <div className="relative w-32 h-32 bg-gray-50 rounded-lg overflow-hidden">
                       <Image
-                        src={(item.images as string) || '/placeholder.jpg'}
+                        src={(item.images as string) || "/placeholder.jpg"}
                         alt={item.name}
                         fill
                         className="object-contain"
@@ -497,25 +546,24 @@ const CartContent = () => {
                   </button>
                 </div>
               ))
-            ) : (
-              <div className="text-center py-12">
+            : <div className="text-center py-12">
                 <p className="text-gray-500">Your cart is empty</p>
                 <button
-                  onClick={() => router.push('/products')}
+                  onClick={() => router.push("/products")}
                   className="mt-4 bg-[#DBA39A] hover:bg-[#c49087] text-white px-6 py-2 rounded-lg transition-colors"
                 >
                   Continue Shopping
                 </button>
               </div>
-            )
-          ) : activeStep === 2 ? (
+
+          : activeStep === 2 ?
             <ShippingForm setShippingForm={setShippingForm} />
-          ) : activeStep === 3 ? (
+          : activeStep === 3 ?
             <PaymentForm
               onPaymentMethodSelect={setPaymentMethod}
               selectedMethod={paymentMethod}
             />
-          ) : null}
+          : null}
         </div>
 
         {/* Right Column - Order Summary */}
@@ -534,7 +582,7 @@ const CartContent = () => {
             <div className="flex justify-between text-sm">
               <p className="text-gray-500">Shipping Fee</p>
               <p className="font-medium">
-                {shippingFee === 0 ? 'To be Negotiated' : `To be Negotiated`}
+                {shippingFee === 0 ? "To be Negotiated" : `To be Negotiated`}
               </p>
             </div>
             <hr className="border-gray-200" />
@@ -548,7 +596,7 @@ const CartContent = () => {
 
           {activeStep === 1 && cart.length > 0 && (
             <button
-              onClick={() => router.push('/cart?step=2', { scroll: false })}
+              onClick={() => router.push("/cart?step=2", { scroll: false })}
               className="w-full bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white p-3 rounded-lg cursor-pointer flex items-center justify-center gap-2"
             >
               Continue to Shipping
@@ -558,7 +606,7 @@ const CartContent = () => {
 
           {activeStep === 2 && shippingForm && (
             <button
-              onClick={() => router.push('/cart?step=3', { scroll: false })}
+              onClick={() => router.push("/cart?step=3", { scroll: false })}
               className="w-full bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white p-3 rounded-lg cursor-pointer flex items-center justify-center gap-2"
             >
               Continue to Payment
@@ -572,17 +620,20 @@ const CartContent = () => {
               disabled={isProcessing}
               className="w-full bg-[#DBA39A] hover:bg-[#c49087] transition-all duration-300 text-white p-3 rounded-lg cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {isProcessing ? (
+              {isProcessing ?
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   <span>Processing...</span>
                 </>
-              ) : (
-                <>
-                  <span>Place Order</span>
+              : <>
+                  <span>
+                    {paymentMethod === "CASH_ON_DELIVERY" ?
+                      "Place Order (Pay on Delivery)"
+                    : "Pay with M-Pesa"}
+                  </span>
                   <ArrowRight className="w-4 h-4" />
                 </>
-              )}
+              }
             </button>
           )}
         </div>
