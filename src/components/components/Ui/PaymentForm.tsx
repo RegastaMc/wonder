@@ -66,7 +66,7 @@ const PaymentForm = ({
               <span className="font-medium">Cash on Delivery</span>
             </div>
             <p className="text-sm text-gray-600">
-              Pay when your order arrives at your doorstep.
+              You'll pay in cash when your order is delivered to you.
             </p>
           </div>
         </label>
