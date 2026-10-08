@@ -368,7 +368,7 @@ const OrderDetailsModal = ({
                   key={item.id}
                   className="flex gap-4 pb-4 border-b border-gray-100 last:border-0"
                 >
-                  <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden shrink-0">
                     {item.product.images && item.product.images[0] ?
                       <Image
                         src={item.product.images[0]}
